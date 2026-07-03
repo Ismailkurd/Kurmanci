@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kurmancî">
+<title>Kurmancî</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --ink:#0A0F0B;
+  --paper:#F2EDE3;
+  --paper2:#E8E0D0;
+  --paper3:#DDD4C0;
+  --kurd:#C9302A;
+  --kurd2:#A82420;
+  --gold:#D4A017;
+  --gold2:#B8860B;
+  --green:#1A5C2E;
+  --green2:#0F3D1E;
+  --text:#1A1A0F;
+  --text2:#4A4535;
+  --text3:#8A8070;
+  --white:#FDFAF4;
+  --radius:12px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-top:env(safe-area-inset-top,0px);
+}
+body{background:var(--paper);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* ===== SPLASH ===== */
+#splash{position:fixed;inset:0;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.5s}
+#splash.hide{opacity:0;pointer-events:none}
+.splash-flag{font-size:64px;margin-bottom:16px;animation:pulse 2s infinite}
+.splash-title{font-size:36px;font-weight:800;color:var(--white);letter-spacing:-1px}
+.splash-sub{font-size:14px;color:#7A8A7A;margin-top:6px;letter-spacing:0.05em}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+/* ===== NAV ===== */
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--ink);display:flex;justify-content:space-around;align-items:flex-end;padding:8px 0 calc(8px + var(--safe-bottom));z-index:100;border-top:1px solid #222}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 8px;transition:all 0.2s;min-width:60px}
+.nav-icon{font-size:20px;line-height:1;transition:transform 0.2s}
+.nav-label{font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#4A5A4A;transition:color 0.2s}
+.nav-btn.active .nav-icon{transform:scale(1.15)}
+.nav-btn.active .nav-label{color:var(--gold)}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:transparent;margin-top:2px;transition:background 0.2s}
+.nav-btn.active .nav-dot{background:var(--gold)}
+
+/* ===== PAGES ===== */
+.page{display:none;padding-top:calc(var(--safe-top) + 12px);padding-bottom:calc(80px + var(--safe-bottom));min-height:100vh;animation:fadeIn 0.25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== HOME ===== */
+.home-hero{background:var(--ink);padding:28px 20px 24px;margin-bottom:0}
+.home-hero-top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.hero-flag{font-size:32px}
+.hero-title{font-size:30px;font-weight:800;color:var(--white);letter-spacing:-0.5px;line-height:1}
+.hero-sub{font-size:13px;color:#6A7A6A;letter-spacing:0.03em}
+.hero-streak{background:#1A2A1A;border-radius:8px;padding:10px 14px;margin-top:14px;display:flex;align-items:center;gap:8px}
+.streak-num{font-size:24px;font-weight:800;color:var(--gold)}
+.streak-label{font-size:12px;color:#5A7A5A}
+
+.section-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;padding:18px 20px 8px}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
+.quick-card{background:var(--white);border-radius:var(--radius);padding:16px;border:1px solid var(--paper3);cursor:pointer;transition:all 0.15s;active:scale(0.97)}
+.quick-card:active{transform:scale(0.97)}
+.quick-icon{font-size:28px;margin-bottom:6px}
+.quick-title{font-size:14px;font-weight:700;color:var(--text)}
+.quick-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.quick-card.red{border-left:3px solid var(--kurd)}
+.quick-card.gold{border-left:3px solid var(--gold)}
+.quick-card.green{border-left:3px solid var(--green)}
+.quick-card.ink{border-left:3px solid var(--ink)}
+
+.tip-card{background:var(--green2);border-radius:var(--radius);margin:12px 16px;padding:14px 16px;border:1px solid #0A2A10}
+.tip-label{font-size:10px;font-weight:700;color:#5DBD85;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.tip-text{font-size:13px;color:#C8E8CC;line-height:1.5}
+
+/* ===== PAGE HEADER ===== */
+.page-head{padding:16px 20px 12px;background:var(--ink);margin-bottom:16px}
+.page-head-title{font-size:24px;font-weight:800;color:var(--white);letter-spacing:-0.3px}
+.page-head-sub{font-size:12px;color:#5A7A5A;margin-top:2px}
+
+/* ===== CONTENT PADDING ===== */
+.content{padding:0 16px}
+
+/* ===== CARDS ===== */
+.card{background:var(--white);border:1px solid var(--paper3);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.card-head{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.card-head-icon{font-size:14px}
+
+/* ===== PILLS ===== */
+.pills{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pills::-webkit-scrollbar{display:none}
+.pill{padding:7px 14px;border-radius:20px;border:1px solid var(--paper3);background:var(--white);cursor:pointer;font-size:12px;font-weight:600;color:var(--text3);white-space:nowrap;transition:all 0.15s}
+.pill.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
+
+/* ===== TABLE ===== */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:6px 8px;color:var(--text3);font-size:11px;font-weight:600;border-bottom:1px solid var(--paper3);text-transform:uppercase;letter-spacing:0.05em}
+td{padding:10px 8px;border-bottom:1px solid var(--paper2);color:var(--text);line-height:1.4;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.kd{color:var(--kurd);font-weight:600}
+.kd2{color:var(--green);font-weight:500}
+
+/* ===== BADGES ===== */
+.badge{display:inline-block;font-size:9px;padding:2px 7px;border-radius:20px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase}
+.badge-t{background:#FFEEEC;color:var(--kurd)}
+.badge-i{background:#EEF7EE;color:var(--green)}
+.badge-neu{background:#FFF8E8;color:var(--gold2)}
+
+/* ===== TRAINER ===== */
+.trainer-wrap{padding:0 16px}
+.mode-toggle{display:flex;gap:6px;margin-bottom:14px}
+.mode-btn{flex:1;padding:9px 6px;border-radius:var(--radius);border:1px solid var(--paper3);background:var(--white);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;text-align:center}
+.mode-btn.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.t-progress-bar{height:4px;background:var(--paper2);border-radius:2px;margin-bottom:14px;overflow:hidden}
+.t-progress-fill{height:100%;background:linear-gradient(90deg,var(--kurd),var(--gold));border-radius:2px;transition:width 0.3s}
+.t-progress-text{font-size:11px;color:var(--text3);margin-bottom:10px;text-align:right}
+.t-card{background:var(--ink);border-radius:16px;padding:36px 24px;text-align:center;margin-bottom:14px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.t-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:radial-gradient(circle,rgba(212,160,23,0.15),transparent);border-radius:50%}
+.t-dir{font-size:10px;color:#5A7A5A;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;font-weight:600}
+.t-word{font-size:30px;font-weight:800;color:var(--white);line-height:1.2;margin-bottom:6px}
+.t-hint{font-size:11px;color:#4A6A4A}
+.t-input{width:100%;padding:14px 16px;border-radius:var(--radius);border:2px solid var(--paper3);background:var(--white);color:var(--text);font-size:16px;text-align:center;transition:border-color 0.2s;-webkit-appearance:none;margin-bottom:10px}
+.t-input:focus{outline:none;border-color:var(--ink)}
+.t-input.correct{border-color:var(--green);background:#F0FAF0}
+.t-input.wrong{border-color:var(--kurd);background:#FFF0EE}
+.t-feedback{font-size:14px;font-weight:700;min-height:20px;text-align:center;margin-bottom:10px}
+.t-ok{color:var(--green)}
+.t-err{color:var(--kurd)}
+.btn{width:100%;padding:14px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.15s;letter-spacing:0.02em}
+.btn:active{transform:scale(0.98)}
+.btn-primary{background:var(--ink);color:var(--white)}
+.btn-secondary{background:var(--paper2);color:var(--text2);margin-top:8px}
+.t-score{background:var(--ink);border-radius:16px;padding:32px 24px;text-align:center;margin-top:8px}
+.t-score-num{font-size:56px;font-weight:800;color:var(--gold);line-height:1}
+.t-score-denom{font-size:20px;color:#5A7A5A;margin-bottom:4px}
+.t-score-msg{font-size:16px;color:var(--white);font-weight:600;margin-top:12px}
+.t-score-sub{font-size:13px;color:#5A7A5A;margin-top:4px}
+
+/* ===== GRAMMAR ===== */
+.grammar-topic{background:var(--white);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;border:1px solid var(--paper3)}
+.grammar-topic-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.grammar-topic-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.grammar-topic-icon{font-size:18px}
+.grammar-chevron{font-size:12px;color:var(--text3);transition:transform 0.2s}
+.grammar-topic.open .grammar-chevron{transform:rotate(180deg)}
+.grammar-body{display:none;padding:0 16px 16px;border-top:1px solid var(--paper2)}
+.grammar-topic.open .grammar-body{display:block}
+.rule{background:var(--paper);border-radius:8px;padding:12px;margin-top:10px;font-size:13px;color:var(--text2);line-height:1.6;border-left:3px solid var(--gold)}
+.rule strong{color:var(--text);font-weight:700}
+.rule .ex{color:var(--kurd);font-style:italic;display:block;margin-top:4px;font-size:12px}
+.neu-tag{display:inline-block;background:#FFF8E8;color:var(--gold2);font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;vertical-align:middle;margin-left:6px;text-transform:uppercase;letter-spacing:0.04em}
+
+/* ===== TEXTS ===== */
+.text-card{background:var(--white);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;border:1px solid var(--paper3)}
+.text-card-head{padding:14px 16px 10px}
+.text-card-level{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.level-a1{color:var(--green)}
+.level-a2{color:var(--gold2)}
+.level-b1{color:var(--kurd)}
+.text-card-title{font-size:15px;font-weight:700;color:var(--text)}
+.text-body{padding:0 16px 4px;font-size:15px;line-height:1.85;color:var(--text);font-style:italic;border-top:1px solid var(--paper2)}
+.text-actions{display:flex;gap:8px;padding:12px 16px}
+.text-btn{flex:1;padding:9px;border-radius:8px;border:1px solid var(--paper3);background:var(--paper);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;text-align:center;transition:all 0.15s}
+.text-btn.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.text-translation{display:none;padding:12px 16px 16px;font-size:14px;color:var(--text2);line-height:1.7;border-top:1px solid var(--paper2)}
+.text-vocab{display:none;padding:12px 16px 16px;border-top:1px solid var(--paper2)}
+.text-vocab-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--paper2);font-size:13px}
+.text-vocab-item:last-child{border-bottom:none}
+.text-vocab-k{color:var(--kurd);font-weight:600}
+
+/* ===== PHRASES ===== */
+.phrase-item{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--paper2);gap:8px}
+.phrase-item:last-child{border-bottom:none}
+.phrase-k{color:var(--kurd);font-weight:600;font-size:14px;flex:1}
+.phrase-d{color:var(--text2);font-size:13px;flex:1;text-align:right}
+
+/* ===== HIDDEN ===== */
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-flag">🏳️</div>
+  <div class="splash-title">Kurmancî</div>
+  <div class="splash-sub">KURDISCH LERNEN</div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPage('home')" id="nav-home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Start</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="showPage('vocab')" id="nav-vocab">
+    <span class="nav-icon">📚</span>
+    <span class="nav-label">Wörter</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="showPage('trainer')" id="nav-trainer">
+    <span class="nav-icon">✏️</span>
+    <span class="nav-label">Trainer</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="showPage('grammar')" id="nav-grammar">
+    <span class="nav-icon">📐</span>
+    <span class="nav-label">Grammatik</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="showPage('texts')" id="nav-texts">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">Texte</span>
+    <div class="nav-dot"></div>
+  </button>
+</nav>
+
+<!-- ===== HOME ===== -->
+<div class="page active" id="page-home">
+  <div class="home-hero">
+    <div class="home-hero-top">
+      <span class="hero-flag">🏳️</span>
+      <div>
+        <div class="hero-title">Kurmancî</div>
+        <div class="hero-sub">KURDISCH · KURMANDSCHI</div>
+      </div>
+    </div>
+    <div class="hero-streak">
+      <div class="streak-num" id="home-count">57</div>
+      <div class="streak-label">Vokabeln gelernt</div>
+    </div>
+  </div>
+
+  <div class="section-label">Schnellzugriff</div>
+  <div class="quick-grid">
+    <div class="quick-card red" onclick="showPage('trainer')">
+      <div class="quick-icon">✏️</div>
+      <div class="quick-title">Trainer</div>
+      <div class="quick-sub">Vokabeln üben</div>
+    </div>
+    <div class="quick-card gold" onclick="showPage('vocab')">
+      <div class="quick-icon">📚</div>
+      <div class="quick-title">Wörterbuch</div>
+      <div class="quick-sub">Alle Vokabeln</div>
+    </div>
+    <div class="quick-card green" onclick="showPage('grammar')">
+      <div class="quick-icon">📐</div>
+      <div class="quick-title">Grammatik</div>
+      <div class="quick-sub">Regeln & Strukturen</div>
+    </div>
+    <div class="quick-card ink" onclick="showPage('texts')">
+      <div class="quick-icon">📖</div>
+      <div class="quick-title">Texte</div>
+      <div class="quick-sub">Lesen & verstehen</div>
+    </div>
+  </div>
+
+  <div class="tip-card" id="daily-tip">
+    <div class="tip-label">💡 Tipp des Tages</div>
+    <div class="tip-text" id="tip-text">Wird geladen...</div>
+  </div>
+
+  <div class="section-label">Nützliche Sätze</div>
+  <div class="content">
+    <div class="card">
+      <div class="phrase-item"><span class="phrase-k">Çawa yî?</span><span class="phrase-d">Wie geht es dir?</span></div>
+      <div class="phrase-item"><span class="phrase-k">Baş im, spas</span><span class="phrase-d">Gut, danke</span></div>
+      <div class="phrase-item"><span class="phrase-k">Ez li benda te me</span><span class="phrase-d">Ich warte auf dich</span></div>
+      <div class="phrase-item"><span class="phrase-k">Were em biçin</span><span class="phrase-d">Komm, lass uns gehen</span></div>
+      <div class="phrase-item"><span class="phrase-k">Ez hinekî kurmancî dizanim</span><span class="phrase-d">Ich kann ein bisschen Kurdisch</span></div>
+      <div class="phrase-item"><span class="phrase-k">Xwedê qebûl bike</span><span class="phrase-d">Möge Gott es annehmen</span></div>
+      <div class="phrase-item"><span class="phrase-k">Şev baş · Serkeftin · Afrîn</span><span class="phrase-d">Gute Nacht · Viel Erfolg · Bravo</span></div>
+      <div class="phrase-item"><span class="phrase-k">Hevalê min heja</span><span class="phrase-d">Mein lieber Freund</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VOCAB ===== -->
+<div class="page" id="page-vocab">
+  <div class="page-head">
+    <div class="page-head-title">Wörterbuch</div>
+    <div class="page-head-sub" id="vocab-count-label">Alle Vokabeln</div>
+  </div>
+  <div class="pills" id="vocab-pills"></div>
+  <div class="content">
+    <div class="card" style="padding:0">
+      <table style="padding:0">
+        <thead><tr><th style="padding:10px 12px">Deutsch</th><th style="padding:10px 12px">Kurmancî</th><th style="padding:10px 12px">Thema</th></tr></thead>
+        <tbody id="vocab-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TRAINER ===== -->
+<div class="page" id="page-trainer">
+  <div class="page-head">
+    <div class="page-head-title">Trainer</div>
+    <div class="page-head-sub">Tippe und drücke Enter</div>
+  </div>
+  <div class="trainer-wrap">
+    <div class="mode-toggle">
+      <button class="mode-btn active" onclick="setMode('kd')" id="mode-kd">Kurm→DE</button>
+      <button class="mode-btn" onclick="setMode('dk')" id="mode-dk">DE→Kurm</button>
+      <button class="mode-btn" onclick="setMode('mix')" id="mode-mix">Gemischt</button>
+    </div>
+    <div class="t-progress-bar"><div class="t-progress-fill" id="t-fill" style="width:0%"></div></div>
+    <div class="t-progress-text" id="t-prog"></div>
+    <div class="t-card">
+      <div class="t-dir" id="t-dir"></div>
+      <div class="t-word" id="t-word"></div>
+      <div class="t-hint" id="t-hint"></div>
+    </div>
+    <div class="t-feedback" id="t-feedback"></div>
+    <input class="t-input" type="text" id="t-input" placeholder="Deine Antwort..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+    <button class="btn btn-primary" id="t-check" onclick="checkTrainer()">Prüfen</button>
+    <button class="btn btn-secondary hidden" id="t-next" onclick="nextTrainer()">Weiter →</button>
+    <div class="t-score hidden" id="t-score">
+      <div class="t-score-num" id="t-score-num"></div>
+      <div class="t-score-denom" id="t-score-denom"></div>
+      <div class="t-score-msg" id="t-score-msg"></div>
+      <div class="t-score-sub" id="t-score-sub"></div>
+      <button class="btn btn-primary" onclick="restartTrainer()" style="margin-top:20px">Nochmal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GRAMMAR ===== -->
+<div class="page" id="page-grammar">
+  <div class="page-head">
+    <div class="page-head-title">Grammatik</div>
+    <div class="page-head-sub">Regeln die du brauchst</div>
+  </div>
+  <div class="content">
+
+    <div class="grammar-topic open">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">📍</span> Ortsangaben</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>li + Ort(-ê)</strong> = sich befinden<span class="ex">Ez li malê me — Ich bin zu Hause</span></div>
+        <div class="rule"><strong>ji + Ort(-ê) + tê/me</strong> = von/aus<span class="ex">Ez ji karê têm — Ich komme von der Arbeit<br>Ez ji Almanyayê me — Ich bin aus Deutschland</span></div>
+        <div class="rule"><strong>diçim + Ort(-ê)</strong> = hingehen<span class="ex">Ez diçim malê — Ich gehe nach Hause</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🔄</span> Indikativ vs. Subjunktiv</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>Indikativ (di-)</strong> = Tatsache<span class="ex">Ez kar dikim — Ich arbeite</span></div>
+        <div class="rule"><strong>Subjunktiv (bi-)</strong> = Wunsch / Aufforderung<span class="ex">Were em biçin — Komm, lass uns gehen<br>Ez dixwazim bixwim — Ich will essen</span></div>
+        <div class="rule"><strong>Verneinung:</strong> na- statt di-<span class="ex">Ez naxwazim — Ich will nicht<br>Ez naçim — Ich gehe nicht</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">⚖️</span> Transitiv & Ergativ</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>Frage:</strong> Kann ich "was?" oder "wen?" fragen?<br>→ Ja = transitiv → Vergangenheit mit min/te/wî...</div>
+        <div class="rule"><strong>Ergative Pronomen in der Vergangenheit:</strong><span class="ex">ez→min · tu→te · ew(m)→wî · ew(f)→wê · em→me · hûn→we · ew(pl.)→wan</span></div>
+        <div class="rule"><strong>Transitiv:</strong><span class="ex">Min xwarin xwar — Ich aß Essen<br>Min got — Ich sagte</span></div>
+        <div class="rule"><strong>Intransitiv:</strong><span class="ex">Ez çûm — Ich ging<br>Ez hatim — Ich kam</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🔨</span> kirin-Prinzip</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>Nomen + kirin</strong> = Verb bilden<span class="ex">kar dikim — ich arbeite<br>telefon dikim — ich telefoniere<br>nimêj dikim — ich bete<br>xwarin çêdikim — ich koche</span></div>
+        <div class="rule"><strong>çêkirin</strong> = herstellen / zubereiten<span class="ex">Bei Produkten: xwarin çêdikim (Essen machen)<br>Nicht: xwarin dikim</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🤝</span> Mit jemandem</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>bi + Person + re</strong> = formal<span class="ex">Ez bi te re diçim — Ich gehe mit dir</span></div>
+        <div class="rule"><strong>gel + Person</strong> = umgangssprachlich (kein re!)<span class="ex">Ez gel te diçim — Ich gehe mit dir</span></div>
+        <div class="rule"><strong>bi hev re</strong> = miteinander / zusammen (allgemein)<span class="ex">Em bi hev re diçin — Wir gehen zusammen</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">✅</span> bûn (sein)</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>Nach Konsonant:</strong> -im / -î / -e / -in<span class="ex">Ez kurdim · Tu kurdî · Ew kurde · Em kurdin</span></div>
+        <div class="rule"><strong>Nach Vokal:</strong> -me / -yî / -ye / -ne<span class="ex">Ez mamosteme · Ew mamostoye</span></div>
+        <div class="rule"><strong>Nach Ortsangabe (li/ji):</strong> me / yî / ye / ne<span class="ex">Ez li malê me · Em li karê ne</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🫱</span> Haben → heye/hene</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule">Kein direktes "haben" im Kurdischen!<br><strong>min + [Sache] + heye</strong> (Singular)<br><strong>min + [Sache] + hene</strong> (Plural)<span class="ex">Min bira heye — Ich habe einen Bruder<br>Min du bira hene — Ich habe zwei Brüder</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">⏰</span> Uhrzeit & Zahlen</div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>Saet çend e?</strong> = Wie viel Uhr ist es?<br><strong>Saet [Zahl] e</strong> = Es ist ... Uhr<span class="ex">Saet sê e — Es ist 3 Uhr<br>Saet nîv heft e — Es ist halb sieben</span></div>
+        <div class="rule"><strong>Zahlen 1-10:</strong><span class="ex">yek · du · sê · çar · pênc · şeş · heft · heşt · neh · deh</span></div>
+        <div class="rule"><strong>Zusammengesetzte Zahlen:</strong> Einer + deh<span class="ex">yazdeh(11) · dozadeh(12) · sêzdeh(13) · çardeh(14) · pêncdeh(15)</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🆕</span> Genitiv (-ê / -a) <span class="neu-tag">NEU</span></div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule">Im Kurmancî zeigt -ê (mask.) oder -a (fem.) Besitz oder Zugehörigkeit an.<br><strong>Maskulin → -ê</strong><span class="ex">bavê min — mein Vater<br>hevalê min — mein Freund</span></div>
+        <div class="rule"><strong>Feminin → -a</strong><span class="ex">dayika min — meine Mutter<br>xwişka min — meine Schwester</span></div>
+        <div class="rule">Nach li/ji bekommt der Ort immer -ê:<span class="ex">li malê · ji karê · li dibistanê</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🆕</span> Verneinung <span class="neu-tag">NEU</span></div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>Präsens:</strong> di- → na-<span class="ex">diçim → naçim (ich gehe nicht)<br>dikim → nakim (ich mache nicht)<br>dixwazim → naxwazim (ich will nicht)</span></div>
+        <div class="rule"><strong>Vergangenheit (intransitiv):</strong> ne- vorne<span class="ex">çûm → neçûm (ich ging nicht)<br>hatim → nehatim (ich kam nicht)</span></div>
+        <div class="rule"><strong>Vergangenheit (transitiv):</strong> ne- vor Verbstamm<span class="ex">Min xwar → min nexwar (ich aß nicht)<br>Min got → min negot (ich sagte nicht)</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🆕</span> Fragen bilden <span class="neu-tag">NEU</span></div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>Fragepronomen:</strong><span class="ex">çi? = was? · kî? = wer? · ku? = wo? · kengê? = wann?<br>çawa? = wie? · çima? = warum? · çend? = wie viel?</span></div>
+        <div class="rule"><strong>Ja/Nein-Fragen:</strong> Intonation oder ma am Anfang<span class="ex">Tu çawayî? — Wie geht es dir?<br>Ma tu diçî? — Gehst du?<br>Saet çend e? — Wie viel Uhr ist es?</span></div>
+        <div class="rule"><strong>Antworten:</strong><span class="ex">Erê = Ja · Na = Nein · Belkî = Vielleicht</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🆕</span> Adjektive <span class="neu-tag">NEU</span></div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule">Adjektive kommen im Kurmancî <strong>nach</strong> dem Nomen:<span class="ex">xwendekarê baş — der gute Schüler<br>maleke mezin — ein großes Haus</span></div>
+        <div class="rule"><strong>Wichtige Adjektive:</strong><span class="ex">baş = gut · xirab = schlecht · mezin = groß<br>biçûk = klein · nû = neu · kevin = alt<br>xweş = schön/lecker · giran = schwer/teuer<br>sivik = leicht/günstig · dirêj = lang · kurt = kurz</span></div>
+        <div class="rule"><strong>Steigerung:</strong> zêdetir (mehr) / herî (am meisten)<span class="ex">baştir = besser · herî baş = am besten</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🆕</span> Weil, wenn, dass <span class="neu-tag">NEU</span></div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>ji ber ku</strong> = weil<span class="ex">Ez naçim ji ber ku ez nexweş im — Ich gehe nicht, weil ich krank bin</span></div>
+        <div class="rule"><strong>eger</strong> = wenn / falls<span class="ex">Eger tu bêyî, ez jî têm — Wenn du kommst, komme ich auch</span></div>
+        <div class="rule"><strong>ku</strong> = dass<span class="ex">Ez dizanim ku tu baş î — Ich weiß, dass du gut bist</span></div>
+        <div class="rule"><strong>lê</strong> = aber<span class="ex">Ez dixwazim, lê ez nikarim — Ich will, aber ich kann nicht</span></div>
+      </div>
+    </div>
+
+    <div class="grammar-topic">
+      <div class="grammar-topic-head" onclick="toggleGrammar(this)">
+        <div class="grammar-topic-title"><span class="grammar-topic-icon">🆕</span> Können & Müssen <span class="neu-tag">NEU</span></div>
+        <span class="grammar-chevron">▼</span>
+      </div>
+      <div class="grammar-body">
+        <div class="rule"><strong>dikarim</strong> = ich kann (karîn)<span class="ex">Ez dikarim kurmancî biaxivim — Ich kann Kurdisch sprechen<br>Ez nikarim = Ich kann nicht</span></div>
+        <div class="rule"><strong>divê</strong> = müssen / sollen (unpersönlich)<span class="ex">Divê ez biçim — Ich muss gehen<br>Divê tu bixwî — Du musst essen</span></div>
+        <div class="rule"><strong>lazim e</strong> = es ist nötig / brauchen<span class="ex">Lazim e ez bixwim — Ich muss essen</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== TEXTS ===== -->
+<div class="page" id="page-texts">
+  <div class="page-head">
+    <div class="page-head-title">Texte</div>
+    <div class="page-head-sub">Lesen & verstehen</div>
+  </div>
+  <div class="content" id="texts-content"></div>
+</div>
+
+<script>
+// ===== SPLASH =====
+setTimeout(()=>document.getElementById('splash').classList.add('hide'),1500);
+
+// ===== DATA =====
+const vocab=[
+  {d:"Name",k:"nav",cat:"Text 1"},{d:"ich",k:"ez",cat:"Text 1"},{d:"Bruder",k:"bira",cat:"Text 1"},
+  {d:"Haus / Zuhause",k:"mal",cat:"Text 1"},{d:"Mutter",k:"dayik",cat:"Text 1"},{d:"Vater",k:"bav",cat:"Text 1"},
+  {d:"zusammen",k:"bi hev re",cat:"Text 1"},{d:"Arbeit",k:"kar",cat:"Text 1"},
+  {d:"Morgen (Tageszeit)",k:"sibeh",cat:"Text 2"},{d:"früh",k:"zû",cat:"Text 2"},
+  {d:"ich stehe auf",k:"radibim",cat:"Text 2"},{d:"zuerst",k:"ewil",cat:"Text 2"},
+  {d:"Badezimmer",k:"serşok",cat:"Text 2"},{d:"ich gehe",k:"diçim",cat:"Text 2"},
+  {d:"danach",k:"paşê",cat:"Text 2"},{d:"Frühstück",k:"taştê",cat:"Text 2"},
+  {d:"ich esse",k:"dixwim",cat:"Text 2"},{d:"Brot",k:"nan",cat:"Text 2"},
+  {d:"Tee",k:"çay",cat:"Text 2"},{d:"nach / danach",k:"piştî",cat:"Text 2"},
+  {d:"viele",k:"gelek",cat:"Text 2"},{d:"Person / Leute",k:"kes",cat:"Text 2"},
+  {d:"Abend",k:"êvar",cat:"Text 2"},{d:"ich kehre zurück",k:"vedigherim",cat:"Text 2"},
+  {d:"Nacht",k:"şev",cat:"Text 2"},{d:"ich schlafe",k:"radizim",cat:"Text 2"},
+  {d:"Job / Arbeit",k:"şixul",cat:"Konversation"},{d:"Kampf",k:"şer",cat:"Konversation"},
+  {d:"Markt",k:"bazar",cat:"Konversation"},{d:"Lehrer",k:"mamoste",cat:"Konversation"},
+  {d:"Schüler",k:"xwendekar",cat:"Konversation"},{d:"Freund",k:"heval",cat:"Konversation"},
+  {d:"Schule",k:"dibistan",cat:"Konversation"},{d:"mit (umgangsspr.)",k:"gel",cat:"Konversation"},
+  {d:"ein bisschen",k:"hinekî",cat:"Konversation"},{d:"lernen",k:"fêrbûn",cat:"Konversation"},
+  {d:"Gebet",k:"nimêj",cat:"Konversation"},{d:"sprechen",k:"diaxivim",cat:"Konversation"},
+  {d:"wollen",k:"dixwazim",cat:"Konversation"},{d:"ich weiß",k:"dizanim",cat:"Konversation"},
+  {d:"eins",k:"yek",cat:"Zahlen"},{d:"zwei",k:"du",cat:"Zahlen"},{d:"drei",k:"sê",cat:"Zahlen"},
+  {d:"vier",k:"çar",cat:"Zahlen"},{d:"fünf",k:"pênc",cat:"Zahlen"},{d:"sechs",k:"şeş",cat:"Zahlen"},
+  {d:"sieben",k:"heft",cat:"Zahlen"},{d:"acht",k:"heşt",cat:"Zahlen"},{d:"neun",k:"neh",cat:"Zahlen"},
+  {d:"zehn",k:"deh",cat:"Zahlen"},{d:"zwanzig",k:"bîst",cat:"Zahlen"},{d:"hundert",k:"sed",cat:"Zahlen"},
+  {d:"tausend",k:"hezar",cat:"Zahlen"},
+  {d:"heute",k:"îro",cat:"Zeit"},{d:"morgen (Tag)",k:"sibê",cat:"Zeit"},{d:"gestern",k:"duh",cat:"Zeit"},
+  {d:"jetzt",k:"niha",cat:"Zeit"},{d:"mittags",k:"nîvro",cat:"Zeit"},{d:"Uhr / Stunde",k:"saet",cat:"Zeit"},
+  {d:"halb",k:"nîv",cat:"Zeit"},{d:"Viertel",k:"çaryek",cat:"Zeit"},
+  {d:"gut",k:"baş",cat:"Adjektive"},{d:"schlecht",k:"xirab",cat:"Adjektive"},
+  {d:"groß",k:"mezin",cat:"Adjektive"},{d:"klein",k:"biçûk",cat:"Adjektive"},
+  {d:"schön / lecker",k:"xweş",cat:"Adjektive"},{d:"neu",k:"nû",cat:"Adjektive"},
+  {d:"alt",k:"kevin",cat:"Adjektive"},{d:"teuer / schwer",k:"giran",cat:"Adjektive"},
+  {d:"ja",k:"erê",cat:"Sonstiges"},{d:"nein",k:"na",cat:"Sonstiges"},
+  {d:"vielleicht",k:"belkî",cat:"Sonstiges"},{d:"weil",k:"ji ber ku",cat:"Sonstiges"},
+  {d:"aber",k:"lê",cat:"Sonstiges"},{d:"wenn / falls",k:"eger",cat:"Sonstiges"},
+  {d:"dass",k:"ku",cat:"Sonstiges"},{d:"ich kann",k:"dikarim",cat:"Sonstiges"},
+  {d:"ich muss",k:"divê ez",cat:"Sonstiges"},{d:"was?",k:"çi?",cat:"Sonstiges"},
+  {d:"wer?",k:"kî?",cat:"Sonstiges"},{d:"wo?",k:"ku?",cat:"Sonstiges"},
+  {d:"wann?",k:"kengê?",cat:"Sonstiges"},{d:"wie?",k:"çawa?",cat:"Sonstiges"},
+  {d:"warum?",k:"çima?",cat:"Sonstiges"},
+];
+
+document.getElementById('home-count').textContent=vocab.length;
+
+const tips=[
+  "gel + Person = mit jemandem (kein re nötig!) · Ez gel te diçim",
+  "Transitiv in der Vergangenheit: ez wird zu min · Min xwarin xwar",
+  "Verneinung: di- wird zu na- · diçim → naçim (ich gehe nicht)",
+  "Adjektive kommen nach dem Nomen: xwendekarê baş = der gute Schüler",
+  "ji ber ku = weil · Ez naçim ji ber ku ez nexweş im",
+  "divê + Subjunktiv = müssen · Divê ez biçim = Ich muss gehen",
+  "Genitiv: bavê min (mein Vater) · dayika min (meine Mutter)",
+  "Fragen: çi=was · kî=wer · ku=wo · kengê=wann · çima=warum",
+];
+document.getElementById('tip-text').textContent=tips[Math.floor(Math.random()*tips.length)];
+
+const texts=[
+  {
+    level:"A1",title:"Navê min Azad e",
+    text:"Navê min Azad e. Ez ji Kurdistanê me. Ez bi kurdî diaxivim. Min du bira hene. Em li malê bi hev re dijîn. Dayika min xwarinê çêdike û bavê min kar dike.",
+    translation:"Mein Name ist Azad. Ich bin aus Kurdistan. Ich spreche Kurdisch. Ich habe zwei Brüder. Wir leben zusammen zu Hause. Meine Mutter kocht und mein Vater arbeitet.",
+    words:[{k:"nav",d:"Name"},{k:"ji Kurdistanê me",d:"ich bin aus Kurdistan"},{k:"diaxivim",d:"ich spreche"},{k:"bira",d:"Bruder"},{k:"dayik",d:"Mutter"},{k:"bav",d:"Vater"}]
+  },
+  {
+    level:"A1",title:"Roja min — Mein Tag",
+    text:"Ez sibehê zû radibim. Ewil ez serşokê diçim. Paşê ez taştê dixwim. Taştê min nan û çay e. Piştî taştê ez diçim kar. Li karê min gelek kes hene. Êvarê ez vedigherim malê û televizyonê temaşe dikim. Şevê ez zû radizim.",
+    translation:"Ich stehe morgens früh auf. Zuerst gehe ich ins Badezimmer. Dann esse ich Frühstück. Mein Frühstück ist Brot und Tee. Nach dem Frühstück gehe ich zur Arbeit. Bei meiner Arbeit gibt es viele Leute. Abends kehre ich nach Hause zurück und schaue fern. Nachts schlafe ich früh.",
+    words:[{k:"sibehê",d:"morgens"},{k:"radibim",d:"ich stehe auf"},{k:"ewil",d:"zuerst"},{k:"taştê",d:"Frühstück"},{k:"êvarê",d:"abends"},{k:"radizim",d:"ich schlafe"}]
+  },
+  {
+    level:"A1",title:"Leyla — Xwendekar",
+    text:"Navê min Leyla ye. Ez ji Almanyayê me. Ez xwendekar im. Sibehê ez zû radibim û taştê dixwim. Paşê ez diçim dibistanê. Ez gel hevalên xwe re dixwînim. Êvarê ez vedigherim malê û xwarin çêdikim. Şevê ez zû radizim.",
+    translation:"Mein Name ist Leyla. Ich bin aus Deutschland. Ich bin Schülerin. Morgens stehe ich früh auf und frühstücke. Danach gehe ich zur Schule. Ich lese/lerne mit meinen Freunden. Abends kehre ich nach Hause zurück und koche. Nachts schlafe ich früh.",
+    words:[{k:"xwendekar",d:"Schüler/in"},{k:"dibistanê",d:"zur Schule"},{k:"dixwînim",d:"ich lese/lerne"},{k:"heval",d:"Freund"},{k:"xwarin çêdikim",d:"ich koche"}]
+  },
+  {
+    level:"A2",title:"Li bazarê — Auf dem Markt",
+    text:"Îro ez diçim bazarê. Min xwarin lazim e. Li bazarê gelek tişt hene. Min sêv û moz kirîn. Moz giran bûn lê sêv erzan bûn. Ez gel firoşkarî axivîm. Wî got: 'Xweş hatî!' Ez spas kir û çûm malê.",
+    translation:"Heute gehe ich auf den Markt. Ich brauche Lebensmittel. Auf dem Markt gibt es viele Dinge. Ich kaufte Äpfel und Bananen. Bananen waren teuer, aber Äpfel waren günstig. Ich sprach mit dem Verkäufer. Er sagte: 'Willkommen!' Ich dankte und ging nach Hause.",
+    words:[{k:"bazaar",d:"Markt"},{k:"tişt",d:"Sache / Ding"},{k:"sêv",d:"Apfel"},{k:"moz",d:"Banane"},{k:"giran",d:"teuer/schwer"},{k:"erzan",d:"günstig"},{k:"firoşkar",d:"Verkäufer"},{k:"spas kirin",d:"danken"}]
+  },
+  {
+    level:"A2",title:"Hevalê min — Mein Freund",
+    text:"Min hevalek baş heye. Navê wî Serhat e. Ew ji Tirkiyeyê ye lê niha li Almanyayê dijî. Em bi hev re dibistanê xwendin. Ew pir zîrek e û gelek dixwîne. Êvarê em gel hev diaxivin û lîstik dilîzin. Ez pir kêfxweş im ku min hevalek wiha heye.",
+    translation:"Ich habe einen guten Freund. Er heißt Serhat. Er ist aus der Türkei, lebt aber jetzt in Deutschland. Wir gingen zusammen zur Schule. Er ist sehr klug und liest viel. Abends sprechen wir miteinander und spielen Spiele. Ich bin sehr glücklich, dass ich so einen Freund habe.",
+    words:[{k:"heval",d:"Freund"},{k:"zîrek",d:"klug"},{k:"dixwîne",d:"er liest"},{k:"lîstik",d:"Spiel"},{k:"dilîzin",d:"sie spielen"},{k:"kêfxweş",d:"glücklich"},{k:"wiha",d:"so ein / solch"}]
+  },
+  {
+    level:"A2",title:"Saet çend e? — Wie viel Uhr ist es?",
+    text:"Sibehê ez zû radibim. Saet heft e. Ez taştê dixwim û diçim karê. Li karê ez gelek dixebitim. Nîvro saet dozadeh e û em dixwin. Êvarê saet şeş e ku ez vedigherim malê. Şevê saet deh e û ez radizim. Roja min baş derbas dibe.",
+    translation:"Morgens stehe ich früh auf. Es ist 7 Uhr. Ich frühstücke und gehe zur Arbeit. Bei der Arbeit arbeite ich viel. Mittags ist es 12 Uhr und wir essen. Abends ist es 18 Uhr, wenn ich nach Hause zurückkehre. Nachts ist es 22 Uhr und ich schlafe. Mein Tag vergeht gut.",
+    words:[{k:"saet heft",d:"7 Uhr"},{k:"dixebitim",d:"ich arbeite (fleißig)"},{k:"nîvro",d:"mittags"},{k:"dozadeh",d:"zwölf"},{k:"derbas dibe",d:"vergeht"}]
+  },
+  {
+    level:"B1",title:"Kurdistan — Welatê min",
+    text:"Kurdistan welatekî mezin e. Ew li çar welatan dabeş bûye: Tirkiye, Îran, Iraq û Sûriye. Kurmanî, Soranî û Zazakî zimanên kurdî yên sereke ne. Zimanê min Kurmanî ye. Kurdistan xwezayeke xweş heye: çiya, çem û deşt. Gelê Kurd çandeke dewlemend û dîrokeke dirêj heye.",
+    translation:"Kurdistan ist ein großes Land. Es ist auf vier Länder aufgeteilt: Türkei, Iran, Irak und Syrien. Kurmandschi, Sorani und Zazaki sind die wichtigsten kurdischen Sprachen. Meine Sprache ist Kurmandschi. Kurdistan hat eine schöne Natur: Berge, Flüsse und Ebenen. Das kurdische Volk hat eine reiche Kultur und eine lange Geschichte.",
+    words:[{k:"welat",d:"Land / Heimat"},{k:"dabeş bûye",d:"ist aufgeteilt"},{k:"ziman",d:"Sprache"},{k:"sereke",d:"hauptsächlich / wichtigste"},{k:"xweza",d:"Natur"},{k:"çiya",d:"Berg"},{k:"çem",d:"Fluss"},{k:"deşt",d:"Ebene"},{k:"gel",d:"Volk"},{k:"çand",d:"Kultur"},{k:"dîrok",d:"Geschichte"}]
+  },
+];
+
+// ===== VOCAB PAGE =====
+const vocabCats=["Alle","Text 1","Text 2","Konversation","Zahlen","Zeit","Adjektive","Sonstiges"];
+let activeVocabCat="Alle";
+function initVocab(){
+  const p=document.getElementById('vocab-pills');
+  vocabCats.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='pill'+(c==='Alle'?' active':'');
+    b.textContent=c;
+    b.onclick=()=>{
+      activeVocabCat=c;
+      p.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      renderVocab();
+    };
+    p.appendChild(b);
+  });
+  renderVocab();
+}
+function renderVocab(){
+  const data=activeVocabCat==='Alle'?vocab:vocab.filter(v=>v.cat===activeVocabCat);
+  document.getElementById('vocab-count-label').textContent=data.length+' Wörter';
+  document.getElementById('vocab-tbody').innerHTML=data.map(v=>`
+    <tr><td style="padding:10px 12px">${v.d}</td><td style="padding:10px 12px" class="kd">${v.k}</td><td style="padding:10px 12px"><span class="badge" style="background:#F0EDE6;color:var(--text3)">${v.cat}</span></td></tr>
+  `).join('');
+}
+
+// ===== TRAINER =====
+let tQueue=[],tIdx=0,tCorrect=0,tMode='kd',tAnswered=false;
+function norm(s){return s.toLowerCase().trim().replace(/[!?.]/g,'').replace(/[êéè]/g,'e').replace(/[îí]/g,'i').replace(/ç/g,'c').replace(/ş/g,'s').replace(/û/g,'u').replace(/\s+/g,' ')}
+function matches(a,b){return b.split('/').map(x=>x.trim()).some(x=>norm(a)===norm(x))}
+function shuffle(a){return a.sort(()=>Math.random()-0.5)}
+function setMode(m){
+  tMode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('mode-'+m).classList.add('active');
+  restartTrainer();
+}
+function buildQueue(){
+  if(tMode==='kd') return shuffle([...vocab]).map(v=>({...v,dir:'kd'}));
+  if(tMode==='dk') return shuffle([...vocab]).map(v=>({...v,dir:'dk'}));
+  return shuffle([...vocab.map(v=>({...v,dir:'kd'})),...vocab.map(v=>({...v,dir:'dk'}))]);
+}
+function restartTrainer(){
+  tQueue=buildQueue();tIdx=0;tCorrect=0;tAnswered=false;
+  document.getElementById('t-score').classList.add('hidden');
+  document.getElementById('t-check').classList.remove('hidden');
+  document.getElementById('t-input').classList.remove('hidden');
+  document.getElementById('t-input').className='t-input';
+  showCard();
+}
+function showCard(){
+  if(tIdx>=tQueue.length){
+    document.getElementById('t-score').classList.remove('hidden');
+    document.getElementById('t-check').classList.add('hidden');
+    document.getElementById('t-next').classList.add('hidden');
+    document.getElementById('t-input').classList.add('hidden');
+    document.getElementById('t-word').textContent='';
+    document.getElementById('t-dir').textContent='';
+    document.getElementById('t-hint').textContent='';
+    document.getElementById('t-feedback').textContent='';
+    document.getElementById('t-prog').textContent='';
+    document.getElementById('t-fill').style.width='100%';
+    const n=tQueue.length;
+    document.getElementById('t-score-num').textContent=tCorrect;
+    document.getElementById('t-score-denom').textContent='von '+n+' richtig';
+    const pct=Math.round(tCorrect/n*100);
+    document.getElementById('t-score-msg').textContent=pct===100?'Afrîn, perfekt! 🎉':pct>=80?'Baş e, sehr gut! 💪':pct>=60?'Hêdî hêdî, weiter so!':'Üb nochmal!';
+    document.getElementById('t-score-sub').textContent=pct+'% korrekt';
+    return;
+  }
+  tAnswered=false;
+  const item=tQueue[tIdx];
+  const pct=Math.round(tIdx/tQueue.length*100);
+  document.getElementById('t-fill').style.width=pct+'%';
+  document.getElementById('t-prog').textContent=(tIdx+1)+' / '+tQueue.length;
+  document.getElementById('t-dir').textContent=item.dir==='kd'?'Kurmancî → Deutsch':'Deutsch → Kurmancî';
+  document.getElementById('t-word').textContent=item.dir==='kd'?item.k:item.d;
+  document.getElementById('t-hint').textContent='Thema: '+item.cat;
+  document.getElementById('t-feedback').textContent='';
+  document.getElementById('t-feedback').className='t-feedback';
+  document.getElementById('t-next').classList.add('hidden');
+  document.getElementById('t-check').classList.remove('hidden');
+  const inp=document.getElementById('t-input');
+  inp.value='';inp.disabled=false;
+  inp.className='t-input';
+  setTimeout(()=>inp.focus(),100);
+}
+function checkTrainer(){
+  if(tAnswered)return;
+  tAnswered=true;
+  const item=tQueue[tIdx];
+  const inp=document.getElementById('t-input');
+  const correct=item.dir==='kd'?item.d:item.k;
+  const ok=matches(inp.value,correct);
+  const fb=document.getElementById('t-feedback');
+  if(ok){fb.className='t-feedback t-ok';fb.textContent='✓ Richtig!';inp.className='t-input correct';tCorrect++;}
+  else{fb.className='t-feedback t-err';fb.textContent='✗ '+correct;inp.className='t-input wrong';}
+  inp.disabled=true;
+  document.getElementById('t-check').classList.add('hidden');
+  document.getElementById('t-next').classList.remove('hidden');
+}
+function nextTrainer(){tIdx++;showCard();}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('t-input').addEventListener('keydown',e=>{
+    if(e.key==='Enter'){if(!tAnswered)checkTrainer();else nextTrainer();}
+  });
+  initVocab();
+  initTexts();
+  restartTrainer();
+});
+
+// ===== GRAMMAR =====
+function toggleGrammar(head){
+  const topic=head.parentElement;
+  topic.classList.toggle('open');
+}
+
+// ===== TEXTS =====
+function initTexts(){
+  const container=document.getElementById('texts-content');
+  texts.forEach((t,i)=>{
+    const levelClass='level-'+t.level.toLowerCase();
+    const wordsHtml=t.words.map(w=>`<div class="text-vocab-item"><span class="text-vocab-k">${w.k}</span><span>${w.d}</span></div>`).join('');
+    const div=document.createElement('div');
+    div.className='text-card';
+    div.innerHTML=`
+      <div class="text-card-head">
+        <div class="text-card-level ${levelClass}">${t.level}</div>
+        <div class="text-card-title">${t.title}</div>
+      </div>
+      <div class="text-body">${t.text}</div>
+      <div class="text-actions">
+        <button class="text-btn" onclick="toggleTextSection('trans-${i}','transbtn-${i}',this,'Übersetzung')">Übersetzung</button>
+        <button class="text-btn" onclick="toggleTextSection('vocab-${i}','vocabbtn-${i}',this,'Vokabeln')">Vokabeln</button>
+      </div>
+      <div class="text-translation" id="trans-${i}">${t.translation}</div>
+      <div class="text-vocab" id="vocab-${i}">${wordsHtml}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+function toggleTextSection(sectionId,btnId,btn,label){
+  const el=document.getElementById(sectionId);
+  const isOpen=el.style.display==='block';
+  el.style.display=isOpen?'none':'block';
+  btn.classList.toggle('active',!isOpen);
+}
+
+// ===== NAV =====
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='trainer')restartTrainer();
+}
+</script>
+</body>
+</html>
