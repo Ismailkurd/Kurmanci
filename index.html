@@ -387,7 +387,8 @@ tr:last-child td{border-bottom:none}
       <div class="t-score-denom" id="t-score-denom"></div>
       <div class="t-score-msg" id="t-score-msg"></div>
       <div class="t-score-sub" id="t-score-sub"></div>
-      <button class="btn btn-primary" onclick="restartTrainer()" style="margin-top:20px">Nochmal</button>
+      <button class="btn btn-primary hidden" id="t-review" onclick="startReview()" style="margin-top:20px;background:var(--kurd)">Fehler üben</button>
+      <button class="btn btn-primary" onclick="restartTrainer()" style="margin-top:10px">Nochmal (alle)</button>
     </div>
   </div>
 </div>
@@ -794,7 +795,15 @@ function matches(a,b){return (Array.isArray(b)?b:[b]).some(x=>norm(a)===norm(x))
 function shuffle(a){return a.sort(()=>Math.random()-0.5)}
 
 // ===== TRAINER =====
-let tQueue=[],tIdx=0,tCorrect=0,tMode='kd',tAnswered=false;
+let tQueue=[],tIdx=0,tCorrect=0,tMode='kd',tAnswered=false,tWrong=[],tReview=false;
+function startReview(){
+  tQueue=shuffle([...tWrong]);tWrong=[];tReview=true;tIdx=0;tCorrect=0;tAnswered=false;
+  document.getElementById('t-score').classList.add('hidden');
+  document.getElementById('t-check').classList.remove('hidden');
+  document.getElementById('t-input').classList.remove('hidden');
+  document.getElementById('t-input').className='t-input';
+  showTCard();
+}
 function setMode(m){
   tMode=m;
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
@@ -807,7 +816,7 @@ function buildQueue(){
   return shuffle([...vocab.map(v=>({...v,dir:'kd'})),...vocab.map(v=>({...v,dir:'dk'}))]);
 }
 function restartTrainer(){
-  tQueue=buildQueue();tIdx=0;tCorrect=0;tAnswered=false;
+  tQueue=buildQueue();tIdx=0;tCorrect=0;tAnswered=false;tWrong=[];tReview=false;
   document.getElementById('t-score').classList.add('hidden');
   document.getElementById('t-check').classList.remove('hidden');
   document.getElementById('t-input').classList.remove('hidden');
@@ -830,8 +839,15 @@ function showTCard(){
     document.getElementById('t-score-num').textContent=tCorrect;
     document.getElementById('t-score-denom').textContent='von '+n+' richtig';
     const pct=Math.round(tCorrect/n*100);
-    document.getElementById('t-score-msg').textContent=pct===100?'Afrîn, perfekt! 🎉':pct>=80?'Baş e, sehr gut! 💪':pct>=60?'Hêdî hêdî, weiter so!':'Üb nochmal!';
-    document.getElementById('t-score-sub').textContent=pct+'% korrekt';
+    document.getElementById('t-score-msg').textContent=pct===100?(tReview?'Alle Fehler gemeistert! 🎉':'Afrîn, perfekt! 🎉'):pct>=80?'Baş e, sehr gut! 💪':pct>=60?'Hêdî hêdî, weiter so!':'Üb nochmal!';
+    document.getElementById('t-score-sub').textContent=pct+'% korrekt'+(tReview?' · Fehler-Runde':'');
+    const rbtn=document.getElementById('t-review');
+    if(tWrong.length>0){
+      rbtn.classList.remove('hidden');
+      rbtn.textContent='Fehler üben ('+tWrong.length+')';
+    }else{
+      rbtn.classList.add('hidden');
+    }
     return;
   }
   tAnswered=false;
@@ -839,7 +855,7 @@ function showTCard(){
   const pct=Math.round(tIdx/tQueue.length*100);
   document.getElementById('t-fill').style.width=pct+'%';
   document.getElementById('t-prog').textContent=(tIdx+1)+' / '+tQueue.length;
-  document.getElementById('t-dir').textContent=item.dir==='kd'?'Kurmancî → Deutsch':'Deutsch → Kurmancî';
+  document.getElementById('t-dir').textContent=(tReview?'🔁 Fehler-Runde · ':'')+(item.dir==='kd'?'Kurmancî → Deutsch':'Deutsch → Kurmancî');
   document.getElementById('t-word').textContent=item.dir==='kd'?item.k:item.d;
   document.getElementById('t-hint').textContent='Thema: '+item.cat;
   document.getElementById('t-feedback').textContent='';
@@ -859,7 +875,7 @@ function checkTrainer(){
   const ok=matches(inp.value,correct);
   const fb=document.getElementById('t-feedback');
   if(ok){fb.className='t-feedback t-ok';fb.textContent='✓ Richtig!';inp.className='t-input correct';tCorrect++;}
-  else{fb.className='t-feedback t-err';fb.textContent='✗ '+correct;inp.className='t-input wrong';}
+  else{fb.className='t-feedback t-err';fb.textContent='✗ '+correct;inp.className='t-input wrong';tWrong.push(item);}
   inp.disabled=true;
   document.getElementById('t-check').classList.add('hidden');
   document.getElementById('t-next').classList.remove('hidden');
