@@ -371,6 +371,7 @@ tr:last-child td{border-bottom:none}
       <button class="mode-btn" onclick="setMode('dk')" id="mode-dk">DE→Kurm</button>
       <button class="mode-btn" onclick="setMode('mix')" id="mode-mix">Gemischt</button>
     </div>
+    <div class="pills" id="t-cats" style="padding:0 0 12px"></div>
     <div class="t-progress-bar"><div class="t-progress-fill" id="t-fill" style="width:0%"></div></div>
     <div class="t-progress-text" id="t-prog"></div>
     <div class="t-card">
@@ -795,7 +796,24 @@ function matches(a,b){return (Array.isArray(b)?b:[b]).some(x=>norm(a)===norm(x))
 function shuffle(a){return a.sort(()=>Math.random()-0.5)}
 
 // ===== TRAINER =====
-let tQueue=[],tIdx=0,tCorrect=0,tMode='kd',tAnswered=false,tWrong=[],tReview=false;
+let tQueue=[],tIdx=0,tCorrect=0,tMode='kd',tAnswered=false,tWrong=[],tReview=false,tCat='Alle';
+function initTrainerCats(){
+  const cats=['Alle',...new Set(vocab.map(v=>v.cat))];
+  const wrap=document.getElementById('t-cats');
+  wrap.innerHTML='';
+  cats.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='pill'+(c===tCat?' active':'');
+    b.textContent=c;
+    b.onclick=()=>{
+      tCat=c;
+      wrap.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+      b.classList.add('active');
+      restartTrainer();
+    };
+    wrap.appendChild(b);
+  });
+}
 function startReview(){
   tQueue=shuffle([...tWrong]);tWrong=[];tReview=true;tIdx=0;tCorrect=0;tAnswered=false;
   document.getElementById('t-score').classList.add('hidden');
@@ -811,9 +829,10 @@ function setMode(m){
   restartTrainer();
 }
 function buildQueue(){
-  if(tMode==='kd') return shuffle([...vocab]).map(v=>({...v,dir:'kd'}));
-  if(tMode==='dk') return shuffle([...vocab]).map(v=>({...v,dir:'dk'}));
-  return shuffle([...vocab.map(v=>({...v,dir:'kd'})),...vocab.map(v=>({...v,dir:'dk'}))]);
+  const pool=tCat==='Alle'?vocab:vocab.filter(v=>v.cat===tCat);
+  if(tMode==='kd') return shuffle([...pool]).map(v=>({...v,dir:'kd'}));
+  if(tMode==='dk') return shuffle([...pool]).map(v=>({...v,dir:'dk'}));
+  return shuffle([...pool.map(v=>({...v,dir:'kd'})),...pool.map(v=>({...v,dir:'dk'}))]);
 }
 function restartTrainer(){
   tQueue=buildQueue();tIdx=0;tCorrect=0;tAnswered=false;tWrong=[];tReview=false;
@@ -1089,6 +1108,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   initTexts();
   initKapitel();
+  initTrainerCats();
   restartTrainer();
 });
 </script>
