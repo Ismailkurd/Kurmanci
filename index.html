@@ -268,9 +268,6 @@ tr:last-child td{border-bottom:none}
   <button class="nav-btn" onclick="showPage('grammar')" id="nav-grammar">
     <span class="nav-icon">📐</span><span class="nav-label">Grammatik</span><div class="nav-dot"></div>
   </button>
-  <button class="nav-btn" onclick="showPage('texts')" id="nav-texts">
-    <span class="nav-icon">📖</span><span class="nav-label">Texte</span><div class="nav-dot"></div>
-  </button>
 </nav>
 
 <!-- ===== HOME ===== -->
@@ -296,7 +293,7 @@ tr:last-child td{border-bottom:none}
     <div class="hero-stats">
       <div class="hero-stat"><div class="hero-stat-num" id="home-vocab-count">85</div><div class="hero-stat-label">Vokabeln</div></div>
       <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">Kapitel</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">7</div><div class="hero-stat-label">Texte</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-label">Texte</div></div>
     </div>
   </div>
 
@@ -317,10 +314,10 @@ tr:last-child td{border-bottom:none}
       <div class="quick-title">Grammatik</div>
       <div class="quick-sub">Regeln & Strukturen</div>
     </div>
-    <div class="quick-card ink" onclick="showPage('texts')">
+    <div class="quick-card ink" onclick="showPage('kapitel')">
       <div class="quick-icon">📖</div>
-      <div class="quick-title">Texte</div>
-      <div class="quick-sub">Lesen & verstehen</div>
+      <div class="quick-title">Lesetexte</div>
+      <div class="quick-sub">In den Kapiteln</div>
     </div>
   </div>
 
@@ -524,14 +521,6 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<!-- ===== TEXTE ===== -->
-<div class="page" id="page-texts">
-  <div class="page-head">
-    <div class="page-head-title">Texte</div>
-    <div class="page-head-sub">Lesen & verstehen</div>
-  </div>
-  <div class="content" id="texts-content"></div>
-</div>
 
 <script>
 // ===== SPLASH =====
@@ -617,10 +606,16 @@ const chapters=[
       {k:"Ez ji ... me",d:"Ich bin aus ..."},{k:"Navê min ... e",d:"Mein Name ist ..."},
     ],
     grammar:"Bûn (sein): Ez kurdim · Tu kurdî · Ew kurde. Nach Konsonant: -im/-î/-e/-in. Herkunft: Ez ji Almanyayê me.",
-    text:{
-      kd:"Merheba! Navê min Azad e. Ez ji Kurdistanê me. Ez bi kurmancî diaxivim. Çawa yî? Ez baş im, spas.",
-      de:"Hallo! Mein Name ist Azad. Ich bin aus Kurdistan. Ich spreche Kurdisch. Wie geht es dir? Mir geht es gut, danke.",
-    },
+    texts:[
+      {title:"Merheba, ez Azad im",
+       kd:"Merheba! Navê min Azad e. Ez ji Kurdistanê me, ji bajarê Amedê. Niha ez li Almanyayê dijîm. Ez bi kurmancî û bi almanî diaxivim. Ez xwendekar im û ez li dibistanê dixwînim. Çawa yî? Ez baş im, spas. Tu ji ku derê yî? Navê te çi ye? Ez kêfxweş im ku ez te nas dikim. Xweş hatî!",
+       de:"Hallo! Mein Name ist Azad. Ich bin aus Kurdistan, aus der Stadt Amed (Diyarbakır). Jetzt lebe ich in Deutschland. Ich spreche Kurdisch und Deutsch. Ich bin Schüler und lerne in der Schule. Wie geht es dir? Mir geht es gut, danke. Woher kommst du? Wie heißt du? Ich freue mich, dich kennenzulernen. Willkommen!",
+       words:[{k:"bajar",d:"Stadt"},{k:"niha",d:"jetzt"},{k:"dijîm",d:"ich lebe"},{k:"nas dikim",d:"ich lerne kennen"},{k:"kêfxweş",d:"froh / glücklich"},{k:"Xweş hatî",d:"Willkommen"}]},
+      {title:"Leyla — Xwendekar",
+       kd:"Navê min Leyla ye. Ez ji Almanyayê me û ez xwendekar im. Sibehê ez zû radibim û taştê dixwim. Paşê ez diçim dibistanê. Li dibistanê em kurmancî û almanî dixwînin. Ez gel hevalên xwe diaxivim û em bi hev re fêr dibin. Êvarê ez vedigherim malê û xwarin çêdikim. Şevê ez pirtûkekê dixwînim û zû radizim.",
+       de:"Mein Name ist Leyla. Ich bin aus Deutschland und bin Schülerin. Morgens stehe ich früh auf und frühstücke. Danach gehe ich zur Schule. In der Schule lernen wir Kurdisch und Deutsch. Ich spreche mit meinen Freunden und wir lernen zusammen. Abends kehre ich nach Hause zurück und koche. Nachts lese ich ein Buch und schlafe früh.",
+       words:[{k:"pirtûk",d:"Buch"},{k:"dixwînim",d:"ich lese / lerne"},{k:"fêr dibin",d:"wir lernen"},{k:"hevalên xwe",d:"meine Freunde"}]}
+    ],
     quiz:[
       {q:"Wie sagt man 'Hallo'?",opts:["Spas","Merheba","Baş im","Erê"],correct:1},
       {q:"Was bedeutet 'Navê min Azad e'?",opts:["Ich bin aus Kurdistan","Wie geht es dir?","Mein Name ist Azad","Danke"],correct:2},
@@ -647,10 +642,16 @@ const chapters=[
       {k:"Min ... heye",d:"Ich habe ... (Singular)"},{k:"Min ... hene",d:"Ich habe ... (Plural)"},
     ],
     grammar:"Haben: min + Sache + heye/hene. Min bira heye = Ich habe einen Bruder. Min du bira hene = Ich habe zwei Brüder. Genitiv: bavê min (mein Vater) · dayika min (meine Mutter).",
-    text:{
-      kd:"Malbata min mezin e. Min bav, dayik û du bira hene. Xwişka min tune ye. Bavê min kar dike û dayika min xwarin çêdike. Em bi hev re li malê dijîn.",
-      de:"Meine Familie ist groß. Ich habe Vater, Mutter und zwei Brüder. Ich habe keine Schwester. Mein Vater arbeitet und meine Mutter kocht. Wir leben zusammen zu Hause.",
-    },
+    texts:[
+      {title:"Malbata min",
+       kd:"Malbata min mezin e. Min bav, dayik û du bira hene. Xwişka min tune ye. Bavê min kar dike û dayika min mamoste ye. Birayê min ê mezin li zanîngehê dixwîne. Birayê min ê biçûk hîn zarok e. Em bi hev re li malê dijîn. Malbata me li Almanyayê dijî lê apê min û xalê min li Kurdistanê dijîn. Ez ji wan hez dikim û ez dixwazim wan bibînim.",
+       de:"Meine Familie ist groß. Ich habe Vater, Mutter und zwei Brüder. Ich habe keine Schwester. Mein Vater arbeitet und meine Mutter ist Lehrerin. Mein großer Bruder studiert an der Universität. Mein kleiner Bruder ist noch ein Kind. Wir leben zusammen zu Hause. Unsere Familie lebt in Deutschland, aber mein Onkel (väterlicherseits) und mein Onkel (mütterlicherseits) leben in Kurdistan. Ich liebe sie und will sie sehen.",
+       words:[{k:"tune ye",d:"gibt es nicht"},{k:"zanîngeh",d:"Universität"},{k:"hîn",d:"noch"},{k:"hez dikim",d:"ich liebe / mag"},{k:"bibînim",d:"(dass ich) sehe"}]},
+      {title:"Hevalê min Serhat",
+       kd:"Min hevalek baş heye. Navê wî Serhat e. Ew ji Tirkiyeyê ye lê niha li Almanyayê dijî. Malbata wî mezin e: bav, dayik, du bira û sê xwişk. Em bi hev re diçin dibistanê. Ew pir zîrek e û gelek dixwîne. Êvarê em gel hev diaxivin û lîstik dilîzin. Hevalê min ê heja pir baş e û ez kêfxweş im ku ew hevalê min e.",
+       de:"Ich habe einen guten Freund. Er heißt Serhat. Er ist aus der Türkei, lebt aber jetzt in Deutschland. Seine Familie ist groß: Vater, Mutter, zwei Brüder und drei Schwestern. Wir gehen zusammen zur Schule. Er ist sehr klug und liest viel. Abends sprechen wir miteinander und spielen Spiele. Mein lieber Freund ist sehr gut und ich bin froh, dass er mein Freund ist.",
+       words:[{k:"zîrek",d:"klug"},{k:"lîstik",d:"Spiel"},{k:"dilîzin",d:"wir spielen"},{k:"heja",d:"lieb / wert"},{k:"malbata wî",d:"seine Familie"}]}
+    ],
     quiz:[
       {q:"Was bedeutet 'dayik'?",opts:["Vater","Bruder","Mutter","Schwester"],correct:2},
       {q:"Wie sagt man 'Ich habe zwei Brüder'?",opts:["Min du bira heye","Min du bira hene","Ez du bira heye","Em du bira hene"],correct:1},
@@ -678,10 +679,16 @@ const chapters=[
       {k:"Nîvro",d:"Mittags"},{k:"Sibehê",d:"Morgens"},
     ],
     grammar:"Präsens: di- + Stamm + Endung. ez=-im, tu=-î, ew=-e, em/hûn/ew=-in. Uhrzeit: Saet heft e = Es ist 7 Uhr. Saet nîv heşt e = Es ist halb acht.",
-    text:{
-      kd:"Sibehê saet heft e ku ez radibim. Ez serşokê diçim û taştê dixwim. Taştê min nan û çay e. Paşê saet heşt e û ez diçim karê. Nîvro em dixwin. Êvarê saet şeş e ku ez vedigherim malê. Şevê saet deh e û ez radizim.",
-      de:"Morgens ist es 7 Uhr, wenn ich aufstehe. Ich gehe ins Badezimmer und frühstücke. Mein Frühstück ist Brot und Tee. Danach ist es 8 Uhr und ich gehe zur Arbeit. Mittags essen wir. Abends ist es 18 Uhr, wenn ich nach Hause zurückkehre. Nachts ist es 22 Uhr und ich schlafe.",
-    },
+    texts:[
+      {title:"Roja min — von morgens bis nachts",
+       kd:"Sibehê saet heft e ku ez radibim. Ewil ez serşokê diçim û paşê taştê dixwim. Taştê min nan, penîr û çay e. Saet heşt e û ez diçim karê. Li karê ez gelek dixebitim. Gelek kes li karê min hene û em bi hev re kar dikin. Nîvro saet dozadeh e û em bi hev re dixwin. Piştî nîvro ez dîsa kar dikim. Êvarê saet şeş e ku ez vedigherim malê. Li malê ez xwarin çêdikim û televizyonê temaşe dikim. Şevê saet deh e û ez radizim. Roja min wiha derbas dibe.",
+       de:"Morgens ist es 7 Uhr, wenn ich aufstehe. Zuerst gehe ich ins Badezimmer und danach frühstücke ich. Mein Frühstück ist Brot, Käse und Tee. Es ist 8 Uhr und ich gehe zur Arbeit. Bei der Arbeit arbeite ich viel. Es gibt viele Leute bei meiner Arbeit und wir arbeiten zusammen. Mittags ist es 12 Uhr und wir essen zusammen. Nach dem Mittag arbeite ich wieder. Abends ist es 18 Uhr, wenn ich nach Hause zurückkehre. Zu Hause koche ich und schaue fern. Nachts ist es 22 Uhr und ich schlafe. So vergeht mein Tag.",
+       words:[{k:"penîr",d:"Käse"},{k:"dixebitim",d:"ich arbeite (fleißig)"},{k:"dîsa",d:"wieder"},{k:"wiha",d:"so"},{k:"derbas dibe",d:"vergeht"},{k:"temaşe dikim",d:"ich schaue"}]},
+      {title:"Dawiya hefteyê — Das Wochenende",
+       kd:"Roja şemiyê ez zû ranabim. Ez heta saet deh radizim! Paşê ez taştê dixwim û diçim bazarê. Êvarê ez gel hevalên xwe me. Em bi hev re dixwin û diaxivin. Roja yekşemê ez li malê me. Ez pirtûkekê dixwînim û kurmancî fêr dibim. Êvarê ez gel malbata xwe televizyonê temaşe dikim. Dawiya hefteyê xweş e!",
+       de:"Am Samstag stehe ich nicht früh auf. Ich schlafe bis 10 Uhr! Danach frühstücke ich und gehe zum Markt. Abends bin ich mit meinen Freunden. Wir essen zusammen und reden. Am Sonntag bin ich zu Hause. Ich lese ein Buch und lerne Kurdisch. Abends schaue ich mit meiner Familie fern. Das Wochenende ist schön!",
+       words:[{k:"dawiya hefteyê",d:"Wochenende"},{k:"şemî",d:"Samstag"},{k:"yekşem",d:"Sonntag"},{k:"ranabim",d:"ich stehe nicht auf"},{k:"heta",d:"bis"}]}
+    ],
     quiz:[
       {q:"Was bedeutet 'Saet çend e?'",opts:["Wie geht es dir?","Wie viel Uhr ist es?","Wann gehst du?","Was machst du?"],correct:1},
       {q:"Wie sagt man 'Es ist 5 Uhr'?",opts:["Saet pênc e","Saet pênc im","Pênc saet e","Ez saet pênc"],correct:0},
@@ -709,10 +716,16 @@ const chapters=[
       {k:"Sêv",d:"Apfel"},{k:"Moz",d:"Banane"},
     ],
     grammar:"Vergangenheit transitiv: min + Verbstamm. Min kirî = ich kaufte. Min xwar = ich aß. Zahlen zusammensetzen: bîst û pênc = 25, sî û yek = 31.",
-    text:{
-      kd:"Îro ez diçim bazarê. Min sêv, moz û nan lazim e. Li bazarê ez gel firoşkarî diaxivim. Ew dibêje: 'Sêv kilo du euro ne.' Ez dibêjim: 'Baş e, du kilo bidin min.' Min du kilo sêv û yek nan kirî. Gelek spas!",
-      de:"Heute gehe ich auf den Markt. Ich brauche Äpfel, Bananen und Brot. Auf dem Markt spreche ich mit dem Verkäufer. Er sagt: 'Äpfel sind zwei Euro pro Kilo.' Ich sage: 'Gut, gib mir zwei Kilo.' Ich kaufte zwei Kilo Äpfel und ein Brot. Vielen Dank!",
-    },
+    texts:[
+      {title:"Li bazarê",
+       kd:"Îro roja şemiyê ye û ez diçim bazarê. Min gelek tişt lazim in: sêv, moz, nan û penîr. Li bazarê gelek kes hene. Ez gel firoşkarî diaxivim û dipirsim: 'Sêv çiqas in?' Ew dibêje: 'Kîloyek du euro ye.' Ez dibêjim: 'Baş e, du kîlo bidin min.' Min sêv, moz û nan kirîn. Moz giran bûn lê sêv erzan bûn. Ez spas dikim û vedigherim malê. Li malê ez ji dayika xwe re dibêjim: 'Min her tişt kirî!'",
+       de:"Heute ist Samstag und ich gehe zum Markt. Ich brauche viele Dinge: Äpfel, Bananen, Brot und Käse. Auf dem Markt gibt es viele Leute. Ich spreche mit dem Verkäufer und frage: 'Wie viel kosten die Äpfel?' Er sagt: 'Ein Kilo kostet zwei Euro.' Ich sage: 'Gut, gib mir zwei Kilo.' Ich kaufte Äpfel, Bananen und Brot. Die Bananen waren teuer, aber die Äpfel waren günstig. Ich bedanke mich und kehre nach Hause zurück. Zu Hause sage ich zu meiner Mutter: 'Ich habe alles gekauft!'",
+       words:[{k:"tişt",d:"Sache / Ding"},{k:"dipirsim",d:"ich frage"},{k:"kîloyek",d:"ein Kilo"},{k:"her tişt",d:"alles"},{k:"ji ... re",d:"zu ... (sagen)"}]},
+      {title:"Li dikanê — Im Laden",
+       kd:"Piştî bazarê ez diçim dikanê. Ez av û şekir dixwazim. Firoşkar dibêje: 'Xweş hatî! Tu çi dixwazî?' Ez dibêjim: 'Ez av û şekir dixwazim. Çiqas in?' Ew dibêje: 'Av yek euro ye û şekir sê euro ye.' Ez çar euro didim û dibêjim: 'Gelek spas!' Ew dibêje: 'Ser çavan!' Ez kêfxweş im ji ber ku her tişt erzan bû.",
+       de:"Nach dem Markt gehe ich in den Laden. Ich will Wasser und Zucker. Der Verkäufer sagt: 'Willkommen! Was möchtest du?' Ich sage: 'Ich möchte Wasser und Zucker. Wie viel kosten sie?' Er sagt: 'Wasser kostet einen Euro und Zucker drei Euro.' Ich gebe vier Euro und sage: 'Vielen Dank!' Er sagt: 'Gern geschehen!' Ich bin froh, weil alles günstig war.",
+       words:[{k:"dikan",d:"Laden"},{k:"şekir",d:"Zucker"},{k:"didim",d:"ich gebe"},{k:"Ser çavan",d:"Gern geschehen"},{k:"bû",d:"war"}]}
+    ],
     quiz:[
       {q:"Was bedeutet 'Çiqas e?'",opts:["Wie heißt du?","Wo ist das?","Wie viel kostet es?","Was ist das?"],correct:2},
       {q:"Was ist 'firoşkar'?",opts:["Käufer","Verkäufer","Markt","Laden"],correct:1},
@@ -740,10 +753,16 @@ const chapters=[
       {k:"Eger",d:"Wenn/Falls"},{k:"Belkî",d:"Vielleicht"},
     ],
     grammar:"Wollen + Subjunktiv: dixwazim + bi-. Ez dixwazim biçim = Ich will gehen. Können: dikarim biaxivim = ich kann sprechen. Müssen: divê ez biçim = ich muss gehen. Verneinung: na- statt di-.",
-    text:{
-      kd:"Ez dixwazim kurmancî fêr bibim ji ber ku ez gelek kurdan nas dikim. Lê kurmancî zehmet e. Ez dikarim hinekî biaxivim lê nikarim baş bibêjim. Divê ez her roj bixwînim. Belkî sibê ez dikarim baştir biaxivim.",
-      de:"Ich will Kurdisch lernen, weil ich viele Kurden kenne. Aber Kurdisch ist schwer. Ich kann ein bisschen sprechen, aber ich kann nicht gut sagen. Ich muss jeden Tag lesen. Vielleicht kann ich morgen besser sprechen.",
-    },
+    texts:[
+      {title:"Ez dixwazim fêr bibim",
+       kd:"Ez dixwazim kurmancî fêr bibim ji ber ku ez gelek kurdan nas dikim. Lê kurmancî zehmet e. Ez dikarim hinekî biaxivim lê nikarim baş bibêjim. Divê ez her roj bixwînim û gel hevalên xwe biaxivim. Hevalê min dibêje: 'Tu dikarî! Hêdî hêdî tu fêr dibî.' Belkî sibê ez dikarim baştir biaxivim. Ez naxwazim dev jê berdim ji ber ku ziman girîng e.",
+       de:"Ich will Kurdisch lernen, weil ich viele Kurden kenne. Aber Kurdisch ist schwer. Ich kann ein bisschen sprechen, aber ich kann es nicht gut sagen. Ich muss jeden Tag lesen und mit meinen Freunden sprechen. Mein Freund sagt: 'Du kannst es! Langsam lernst du.' Vielleicht kann ich morgen besser sprechen. Ich will nicht aufgeben, weil die Sprache wichtig ist.",
+       words:[{k:"zehmet",d:"schwer / schwierig"},{k:"her roj",d:"jeden Tag"},{k:"dev jê berdan",d:"aufgeben"},{k:"girîng",d:"wichtig"},{k:"hêdî hêdî",d:"langsam / Schritt für Schritt"}]},
+      {title:"Kurdistan — Welatê min",
+       kd:"Kurdistan welatekî mezin e. Ew li çar welatan dabeş bûye: Tirkiye, Îran, Iraq û Sûriye. Kurmancî, Soranî û Zazakî zimanên kurdî yên sereke ne. Zimanê min Kurmancî ye. Kurdistan xwezayeke xweş heye: çiya, çem û deşt. Gelê Kurd çandeke dewlemend û dîrokeke dirêj heye. Ez dixwazim rojekê biçim Kurdistanê û welatê xwe bibînim. Divê ez baş kurmancî fêr bibim!",
+       de:"Kurdistan ist ein großes Land. Es ist auf vier Länder aufgeteilt: Türkei, Iran, Irak und Syrien. Kurmandschi, Sorani und Zazaki sind die wichtigsten kurdischen Sprachen. Meine Sprache ist Kurmandschi. Kurdistan hat eine schöne Natur: Berge, Flüsse und Ebenen. Das kurdische Volk hat eine reiche Kultur und eine lange Geschichte. Ich will eines Tages nach Kurdistan gehen und mein Land sehen. Ich muss gut Kurdisch lernen!",
+       words:[{k:"welat",d:"Land / Heimat"},{k:"dabeş bûye",d:"ist aufgeteilt"},{k:"sereke",d:"wichtigste"},{k:"xweza",d:"Natur"},{k:"çiya",d:"Berg"},{k:"çem",d:"Fluss"},{k:"çand",d:"Kultur"},{k:"dîrok",d:"Geschichte"},{k:"rojekê",d:"eines Tages"}]}
+    ],
     quiz:[
       {q:"Was bedeutet 'dikarim'?",opts:["ich will","ich muss","ich kann","ich lerne"],correct:2},
       {q:"Wie sagt man 'Ich will nicht'?",opts:["Nikarim","Naxwazim","Naçim","Divê ez"],correct:1},
@@ -758,37 +777,6 @@ const chapters=[
   },
 ];
 
-// ===== TEXTS =====
-const texts=[
-  {level:"A1",title:"Navê min Azad e",
-   text:"Navê min Azad e. Ez ji Kurdistanê me. Ez bi kurdî diaxivim. Min du bira hene. Em li malê bi hev re dijîn. Dayika min xwarinê çêdike û bavê min kar dike.",
-   translation:"Mein Name ist Azad. Ich bin aus Kurdistan. Ich spreche Kurdisch. Ich habe zwei Brüder. Wir leben zusammen zu Hause. Meine Mutter kocht und mein Vater arbeitet.",
-   words:[{k:"nav",d:"Name"},{k:"bira",d:"Bruder"},{k:"dijîn",d:"wir leben"},{k:"dayik",d:"Mutter"},{k:"bav",d:"Vater"}]},
-  {level:"A1",title:"Roja min — Mein Tag",
-   text:"Ez sibehê zû radibim. Ewil ez serşokê diçim. Paşê ez taştê dixwim. Taştê min nan û çay e. Piştî taştê ez diçim kar. Li karê min gelek kes hene. Êvarê ez vedigherim malê. Şevê ez zû radizim.",
-   translation:"Ich stehe morgens früh auf. Zuerst gehe ich ins Badezimmer. Dann esse ich Frühstück. Mein Frühstück ist Brot und Tee. Nach dem Frühstück gehe ich zur Arbeit. Bei meiner Arbeit gibt es viele Leute. Abends kehre ich nach Hause zurück. Nachts schlafe ich früh.",
-   words:[{k:"sibehê",d:"morgens"},{k:"radibim",d:"ich stehe auf"},{k:"taştê",d:"Frühstück"},{k:"êvarê",d:"abends"},{k:"radizim",d:"ich schlafe"}]},
-  {level:"A1",title:"Leyla — Xwendekar",
-   text:"Navê min Leyla ye. Ez ji Almanyayê me. Ez xwendekar im. Sibehê ez zû radibim û taştê dixwim. Paşê ez diçim dibistanê. Ez gel hevalên xwe re dixwînim. Êvarê ez vedigherim malê û xwarin çêdikim.",
-   translation:"Mein Name ist Leyla. Ich bin aus Deutschland. Ich bin Schülerin. Morgens stehe ich früh auf und frühstücke. Danach gehe ich zur Schule. Ich lerne mit meinen Freunden. Abends kehre ich nach Hause zurück und koche.",
-   words:[{k:"xwendekar",d:"Schüler/in"},{k:"dibistanê",d:"zur Schule"},{k:"dixwînim",d:"ich lese/lerne"},{k:"heval",d:"Freund"}]},
-  {level:"A2",title:"Li bazarê — Auf dem Markt",
-   text:"Îro ez diçim bazarê. Min xwarin lazim e. Li bazarê gelek tişt hene. Min sêv û moz kirîn. Moz giran bûn lê sêv erzan bûn. Ez gel firoşkarî axivîm. Wî got: 'Xweş hatî!' Ez spas kir û çûm malê.",
-   translation:"Heute gehe ich auf den Markt. Ich brauche Lebensmittel. Auf dem Markt gibt es viele Dinge. Ich kaufte Äpfel und Bananen. Bananen waren teuer, aber Äpfel waren günstig. Ich sprach mit dem Verkäufer. Er sagte: 'Willkommen!' Ich dankte und ging nach Hause.",
-   words:[{k:"bazar",d:"Markt"},{k:"sêv",d:"Apfel"},{k:"moz",d:"Banane"},{k:"giran",d:"teuer"},{k:"erzan",d:"günstig"},{k:"firoşkar",d:"Verkäufer"}]},
-  {level:"A2",title:"Hevalê min — Mein Freund",
-   text:"Min hevalek baş heye. Navê wî Serhat e. Ew ji Tirkiyeyê ye lê niha li Almanyayê dijî. Em bi hev re dibistanê xwendin. Ew pir zîrek e û gelek dixwîne. Êvarê em gel hev diaxivin û lîstik dilîzin.",
-   translation:"Ich habe einen guten Freund. Er heißt Serhat. Er ist aus der Türkei, lebt aber jetzt in Deutschland. Wir gingen zusammen zur Schule. Er ist sehr klug und liest viel. Abends sprechen wir miteinander und spielen Spiele.",
-   words:[{k:"heval",d:"Freund"},{k:"zîrek",d:"klug"},{k:"lîstik",d:"Spiel"},{k:"dilîzin",d:"sie spielen"}]},
-  {level:"A2",title:"Saet çend e?",
-   text:"Sibehê ez zû radibim. Saet heft e. Ez taştê dixwim û diçim karê. Li karê ez gelek dixebitim. Nîvro saet dozadeh e û em dixwin. Êvarê saet şeş e ku ez vedigherim malê. Şevê saet deh e û ez radizim.",
-   translation:"Morgens stehe ich früh auf. Es ist 7 Uhr. Ich frühstücke und gehe zur Arbeit. Bei der Arbeit arbeite ich viel. Mittags ist es 12 Uhr und wir essen. Abends ist es 18 Uhr wenn ich nach Hause zurückkehre. Nachts ist es 22 Uhr und ich schlafe.",
-   words:[{k:"saet heft",d:"7 Uhr"},{k:"dixebitim",d:"ich arbeite"},{k:"nîvro",d:"mittags"},{k:"dozadeh",d:"zwölf"}]},
-  {level:"B1",title:"Kurdistan — Welatê min",
-   text:"Kurdistan welatekî mezin e. Ew li çar welatan dabeş bûye: Tirkiye, Îran, Iraq û Sûriye. Kurmanî, Soranî û Zazakî zimanên kurdî yên sereke ne. Kurdistan xwezayeke xweş heye: çiya, çem û deşt. Gelê Kurd çandeke dewlemend û dîrokeke dirêj heye.",
-   translation:"Kurdistan ist ein großes Land. Es ist auf vier Länder aufgeteilt: Türkei, Iran, Irak und Syrien. Kurmandschi, Sorani und Zazaki sind die wichtigsten kurdischen Sprachen. Kurdistan hat eine schöne Natur: Berge, Flüsse und Ebenen. Das kurdische Volk hat eine reiche Kultur und eine lange Geschichte.",
-   words:[{k:"welat",d:"Land/Heimat"},{k:"ziman",d:"Sprache"},{k:"xweza",d:"Natur"},{k:"çiya",d:"Berg"},{k:"çem",d:"Fluss"},{k:"çand",d:"Kultur"},{k:"dîrok",d:"Geschichte"}]},
-];
 
 // ===== NORMALIZE =====
 function norm(s){return s.toLowerCase().trim().replace(/[!?.]/g,'').replace(/[êéè]/g,'e').replace(/[îí]/g,'i').replace(/ç/g,'c').replace(/ş/g,'s').replace(/û/g,'u').replace(/\s+/g,' ')}
@@ -905,27 +893,6 @@ function nextTrainer(){tIdx++;showTCard();}
 function toggleGrammar(head){head.parentElement.classList.toggle('open')}
 
 // ===== TEXTS =====
-function initTexts(){
-  const c=document.getElementById('texts-content');
-  texts.forEach((t,i)=>{
-    const div=document.createElement('div');
-    div.className='text-card';
-    div.innerHTML=`
-      <div class="text-card-head">
-        <div class="text-level level-${t.level.toLowerCase()}">${t.level}</div>
-        <div class="text-card-title">${t.title}</div>
-      </div>
-      <div class="text-body">${t.text}</div>
-      <div class="text-actions">
-        <button class="text-btn" onclick="toggleTextSec('tr${i}',this,'Übersetzung')">Übersetzung</button>
-        <button class="text-btn" onclick="toggleTextSec('vo${i}',this,'Vokabeln')">Vokabeln</button>
-      </div>
-      <div class="text-translation" id="tr${i}">${t.translation}</div>
-      <div class="text-vocab" id="vo${i}">${t.words.map(w=>`<div class="text-vocab-item"><span class="text-vocab-k">${w.k}</span><span>${w.d}</span></div>`).join('')}</div>
-    `;
-    c.appendChild(div);
-  });
-}
 function toggleTextSec(id,btn,label){
   const el=document.getElementById(id);
   const isOpen=el.style.display==='block';
@@ -984,14 +951,18 @@ function openChapter(ch){
     </div>
 
     <div class="ch-section">
-      <div class="ch-section-title">📖 Lesetext</div>
+      <div class="ch-section-title">📖 Lesetexte</div>
+      ${ch.texts.map((t,ti)=>`
       <div class="text-card">
-        <div class="text-body" style="font-style:normal">${ch.text.kd}</div>
+        <div class="text-card-head"><div class="text-card-title">${t.title}</div></div>
+        <div class="text-body" style="font-style:normal">${t.kd}</div>
         <div class="text-actions">
-          <button class="text-btn" onclick="toggleTextSec('ch-tr-${ch.id}',this,'Übersetzung')">Übersetzung anzeigen</button>
+          <button class="text-btn" onclick="toggleTextSec('ch-tr-${ch.id}-${ti}',this)">Übersetzung</button>
+          <button class="text-btn" onclick="toggleTextSec('ch-vo-${ch.id}-${ti}',this)">Vokabeln</button>
         </div>
-        <div class="text-translation" id="ch-tr-${ch.id}">${ch.text.de}</div>
-      </div>
+        <div class="text-translation" id="ch-tr-${ch.id}-${ti}">${t.de}</div>
+        <div class="text-vocab" id="ch-vo-${ch.id}-${ti}">${t.words.map(w=>`<div class="text-vocab-item"><span class="text-vocab-k">${w.k}</span><span>${w.d}</span></div>`).join('')}</div>
+      </div>`).join('')}
     </div>
 
     <div class="ch-section">
@@ -1106,7 +1077,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('t-input').addEventListener('keydown',e=>{
     if(e.key==='Enter'){if(!tAnswered)checkTrainer();else nextTrainer();}
   });
-  initTexts();
   initKapitel();
   initTrainerCats();
   restartTrainer();
