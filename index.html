@@ -40,7 +40,12 @@ body{background:var(--paper);color:var(--text);font-family:-apple-system,BlinkMa
 /* NAV */
 .nav{position:fixed;bottom:0;left:0;right:0;background:var(--ink);display:flex;justify-content:space-around;align-items:flex-end;padding:8px 0 calc(8px + var(--safe-bottom));z-index:100;border-top:1px solid #1A2A1A}
 .nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 8px;transition:all 0.2s;min-width:56px}
-.nav-icon{font-size:20px;line-height:1;transition:transform 0.2s}
+.ic{width:22px;height:22px;display:block}
+.nav-icon{display:flex;align-items:center;justify-content:center;color:#3A5A3A;transition:color 0.2s,transform 0.2s}
+.nav-btn.active .nav-icon{color:var(--gold)}
+.quick-icon .ic{width:26px;height:26px}
+.ch-section-title .ic,.card-head .ic{width:15px;height:15px;display:inline-block;vertical-align:-2px}
+.tip-label .ic{width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:2px}
 .nav-label{font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#3A5A3A;transition:color 0.2s}
 .nav-btn.active .nav-icon{transform:scale(1.15)}
 .nav-btn.active .nav-label{color:var(--gold)}
@@ -75,7 +80,7 @@ body{background:var(--paper);color:var(--text);font-family:-apple-system,BlinkMa
 .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
 .quick-card{background:var(--white);border-radius:var(--radius);padding:14px;border:1px solid var(--paper3);cursor:pointer;transition:transform 0.15s}
 .quick-card:active{transform:scale(0.97)}
-.quick-icon{font-size:26px;margin-bottom:6px}
+.quick-icon{margin-bottom:8px;color:var(--text)}
 .quick-title{font-size:13px;font-weight:700;color:var(--text)}
 .quick-sub{font-size:11px;color:var(--text3);margin-top:2px}
 .quick-card.red{border-left:3px solid var(--kurd)}
@@ -233,6 +238,19 @@ tr:last-child td{border-bottom:none}
 .input-ex-feedback{font-size:12px;margin-top:6px;min-height:16px;font-weight:600}
 
 .hidden{display:none}
+
+/* ICONS */
+.icn{stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:middle}
+.nav-btn .icn{color:#3A5A3A;transition:color 0.2s,transform 0.2s}
+.nav-btn.active .icn{color:var(--gold);transform:scale(1.12)}
+.quick-card .icn{margin-bottom:8px}
+.quick-card.red .icn{color:var(--kurd)}
+.quick-card.gold .icn{color:var(--gold2)}
+.quick-card.green .icn{color:var(--green)}
+.quick-card.ink .icn{color:var(--ink)}
+.ch-section-title .icn{color:var(--gold2);stroke-width:2}
+.gm{width:10px;height:10px;fill:var(--gold);display:inline-block;vertical-align:middle;margin-right:2px}
+.tip-label .icn{color:#5DBD85;width:14px;height:14px;stroke-width:2;margin-right:2px}
 </style>
 </head>
 <body>
@@ -257,16 +275,16 @@ tr:last-child td{border-bottom:none}
 <!-- NAV -->
 <nav class="nav">
   <button class="nav-btn active" onclick="showPage('home')" id="nav-home">
-    <span class="nav-icon">🏠</span><span class="nav-label">Start</span><div class="nav-dot"></div>
+    <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 L12 4 L20 11"/><path d="M6 10 V19 H18 V10"/><path d="M10 19 V14 H14 V19"/></svg><span class="nav-label">Start</span><div class="nav-dot"></div>
   </button>
   <button class="nav-btn" onclick="showPage('kapitel')" id="nav-kapitel">
-    <span class="nav-icon">📗</span><span class="nav-label">Kapitel</span><div class="nav-dot"></div>
+    <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6 C10 4.5 7 4 4.5 4.5 V18.5 C7 18 10 18.5 12 20 C14 18.5 17 18 19.5 18.5 V4.5 C17 4 14 4.5 12 6 Z"/><path d="M12 6 V20"/></svg><span class="nav-label">Kapitel</span><div class="nav-dot"></div>
   </button>
   <button class="nav-btn" onclick="showPage('trainer')" id="nav-trainer">
-    <span class="nav-icon">✏️</span><span class="nav-label">Trainer</span><div class="nav-dot"></div>
+    <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L6.5 14.5 L16 5 A1.8 1.8 0 0 1 18.5 7.5 L9 17 L5 19 Z"/><path d="M14.5 6.5 L17 9"/></svg><span class="nav-label">Trainer</span><div class="nav-dot"></div>
   </button>
   <button class="nav-btn" onclick="showPage('grammar')" id="nav-grammar">
-    <span class="nav-icon">📐</span><span class="nav-label">Grammatik</span><div class="nav-dot"></div>
+    <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L19 19 L5 5 Z"/><path d="M9 19 L9 15.5 M13 19 L13 12"/></svg><span class="nav-label">Grammatik</span><div class="nav-dot"></div>
   </button>
 </nav>
 
@@ -300,29 +318,29 @@ tr:last-child td{border-bottom:none}
   <div class="section-label">Schnellzugriff</div>
   <div class="quick-grid">
     <div class="quick-card red" onclick="showPage('kapitel')">
-      <div class="quick-icon">📗</div>
+      <svg class="icn" style="width:28px;height:28px" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6 C10 4.5 7 4 4.5 4.5 V18.5 C7 18 10 18.5 12 20 C14 18.5 17 18 19.5 18.5 V4.5 C17 4 14 4.5 12 6 Z"/><path d="M12 6 V20"/></svg>
       <div class="quick-title">Kapitel</div>
       <div class="quick-sub">Strukturiert lernen</div>
     </div>
     <div class="quick-card gold" onclick="showPage('trainer')">
-      <div class="quick-icon">✏️</div>
+      <svg class="icn" style="width:28px;height:28px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L6.5 14.5 L16 5 A1.8 1.8 0 0 1 18.5 7.5 L9 17 L5 19 Z"/><path d="M14.5 6.5 L17 9"/></svg>
       <div class="quick-title">Trainer</div>
       <div class="quick-sub">Vokabeln üben</div>
     </div>
     <div class="quick-card green" onclick="showPage('grammar')">
-      <div class="quick-icon">📐</div>
+      <svg class="icn" style="width:28px;height:28px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L19 19 L5 5 Z"/><path d="M9 19 L9 15.5 M13 19 L13 12"/></svg>
       <div class="quick-title">Grammatik</div>
       <div class="quick-sub">Regeln & Strukturen</div>
     </div>
     <div class="quick-card ink" onclick="showPage('kapitel')">
-      <div class="quick-icon">📖</div>
+      <svg class="icn" style="width:28px;height:28px" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5 H14.5 L18.5 7.5 V20.5 H7 Z"/><path d="M14.5 3.5 V7.5 H18.5"/><path d="M9.5 12 H16 M9.5 15 H16 M9.5 18 H13.5"/></svg>
       <div class="quick-title">Lesetexte</div>
       <div class="quick-sub">In den Kapiteln</div>
     </div>
   </div>
 
   <div class="tip-card" id="daily-tip">
-    <div class="tip-label">💡 Tipp des Tages</div>
+    <div class="tip-label"><svg class="icn" style="width:14px;height:14px" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 L13.6 9.2 L20 11 L13.6 12.8 L12 19 L10.4 12.8 L4 11 L10.4 9.2 Z"/></svg> Tipp des Tages</div>
     <div class="tip-text" id="tip-text"></div>
   </div>
 
@@ -400,7 +418,7 @@ tr:last-child td{border-bottom:none}
   <div class="content">
     <div class="grammar-topic open">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">📍 Ortsangaben</div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Ortsangaben</div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>li + Ort(-ê)</strong> = sich befinden<span class="ex">Ez li malê me — Ich bin zu Hause</span></div>
@@ -410,7 +428,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🔄 Indikativ vs. Subjunktiv</div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Indikativ vs. Subjunktiv</div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>Indikativ (di-)</strong> = Tatsache<span class="ex">Ez kar dikim — Ich arbeite</span></div>
@@ -420,7 +438,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">⚖️ Transitiv & Ergativ</div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Transitiv & Ergativ</div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>Frage:</strong> Kann ich "was?" oder "wen?" fragen? → Ja = transitiv</div>
@@ -431,7 +449,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🔨 kirin-Prinzip</div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> kirin-Prinzip</div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>Nomen + kirin</strong> = Verb bilden<span class="ex">kar dikim · telefon dikim · nimêj dikim · xwarin çêdikim</span></div>
@@ -439,7 +457,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🤝 Mit jemandem</div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Mit jemandem</div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>bi + Person + re</strong> = formal<span class="ex">Ez bi te re diçim</span></div>
@@ -448,7 +466,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">✅ bûn (sein)</div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> bûn (sein)</div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>Nach Konsonant:</strong> -im / -î / -e / -in<span class="ex">Ez kurdim · Tu kurdî · Ew kurde · Em kurdin</span></div>
@@ -458,7 +476,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🫱 Haben → heye/hene</div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Haben → heye/hene</div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>min + [Sache] + heye</strong> (Singular)<br><strong>min + [Sache] + hene</strong> (Plural)<span class="ex">Min bira heye · Min du bira hene</span></div>
@@ -466,7 +484,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🆕 Genitiv (-ê / -a) <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Genitiv (-ê / -a) <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>Maskulin → -ê:</strong><span class="ex">bavê min · hevalê min</span></div>
@@ -475,7 +493,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🆕 Verneinung <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Verneinung <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>Präsens:</strong> di- → na-<span class="ex">diçim → naçim · dixwazim → naxwazim</span></div>
@@ -485,7 +503,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🆕 Fragen bilden <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Fragen bilden <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>Fragepronomen:</strong><span class="ex">çi?=was · kî?=wer · ku?=wo · kengê?=wann · çawa?=wie · çima?=warum</span></div>
@@ -494,7 +512,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🆕 Adjektive <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Adjektive <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule">Adjektive kommen <strong>nach</strong> dem Nomen<span class="ex">xwendekarê baş · maleke mezin</span></div>
@@ -503,7 +521,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🆕 Können & Müssen <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Können & Müssen <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><strong>dikarim</strong> = ich kann · <strong>nikarim</strong> = ich kann nicht<span class="ex">Ez dikarim kurmancî biaxivim</span></div>
@@ -512,7 +530,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <div class="grammar-topic">
       <div class="grammar-topic-head" onclick="toggleGrammar(this)">
-        <div class="grammar-topic-title">🆕 Konjunktionen <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
+        <div class="grammar-topic-title"><svg class="gm" viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="3" width="6" height="6" transform="rotate(45 6 6)"/></svg> Konjunktionen <span class="neu-tag">NEU</span></div><span class="grammar-chevron">▼</span>
       </div>
       <div class="grammar-body">
         <div class="rule"><span class="ex">ji ber ku = weil · eger = wenn/falls · ku = dass · lê = aber · û = und</span></div>
@@ -862,7 +880,7 @@ function showTCard(){
   const pct=Math.round(tIdx/tQueue.length*100);
   document.getElementById('t-fill').style.width=pct+'%';
   document.getElementById('t-prog').textContent=(tIdx+1)+' / '+tQueue.length;
-  document.getElementById('t-dir').textContent=(tReview?'🔁 Fehler-Runde · ':'')+(item.dir==='kd'?'Kurmancî → Deutsch':'Deutsch → Kurmancî');
+  document.getElementById('t-dir').textContent=(tReview?'Fehler-Runde · ':'')+(item.dir==='kd'?'Kurmancî → Deutsch':'Deutsch → Kurmancî');
   document.getElementById('t-word').textContent=item.dir==='kd'?item.k:item.d;
   document.getElementById('t-hint').textContent='Thema: '+item.cat;
   document.getElementById('t-feedback').textContent='';
@@ -941,17 +959,17 @@ function openChapter(ch){
     </div>
 
     <div class="ch-section">
-      <div class="ch-section-title">📚 Vokabeln</div>
+      <div class="ch-section-title"><svg class="icn" style="width:16px;height:16px" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8 L12 4 L20 8 L12 12 Z"/><path d="M4 12.5 L12 16.5 L20 12.5"/><path d="M4 16.5 L12 20.5 L20 16.5"/></svg> Vokabeln</div>
       ${ch.vocab.map(v=>`<div class="ch-vocab-item"><span class="ch-vocab-k">${v.k}</span><span class="ch-vocab-d">${v.d}</span></div>`).join('')}
     </div>
 
     <div class="ch-section">
-      <div class="ch-section-title">📐 Grammatik</div>
+      <div class="ch-section-title"><svg class="icn" style="width:16px;height:16px" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 16.5 L16.5 3.5 L20.5 7.5 L7.5 20.5 Z"/><path d="M7 13 L8.8 14.8 M10 10 L11.8 11.8 M13 7 L14.8 8.8"/></svg> Grammatik</div>
       <div class="card" style="font-size:13px;color:var(--text2);line-height:1.7">${ch.grammar}</div>
     </div>
 
     <div class="ch-section">
-      <div class="ch-section-title">📖 Lesetexte</div>
+      <div class="ch-section-title"><svg class="icn" style="width:16px;height:16px" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5 H14.5 L18.5 7.5 V20.5 H7 Z"/><path d="M14.5 3.5 V7.5 H18.5"/><path d="M9.5 12 H16 M9.5 15 H16 M9.5 18 H13.5"/></svg> Lesetexte</div>
       ${ch.texts.map((t,ti)=>`
       <div class="text-card">
         <div class="text-card-head"><div class="text-card-title">${t.title}</div></div>
@@ -966,12 +984,12 @@ function openChapter(ch){
     </div>
 
     <div class="ch-section">
-      <div class="ch-section-title">🎯 Multiple Choice Quiz</div>
+      <div class="ch-section-title"><svg class="icn" style="width:16px;height:16px" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2"/></svg> Multiple Choice Quiz</div>
       <div id="ch-quiz-${ch.id}"></div>
     </div>
 
     <div class="ch-section">
-      <div class="ch-section-title">✏️ Übersetzungsübungen</div>
+      <div class="ch-section-title"><svg class="icn" style="width:16px;height:16px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L6.5 14.5 L16 5 A1.8 1.8 0 0 1 18.5 7.5 L9 17 L5 19 Z"/><path d="M14.5 6.5 L17 9"/></svg> Übersetzungsübungen</div>
       <div id="ch-inputs-${ch.id}"></div>
       <button class="btn btn-primary" onclick="checkInputs(${ch.id})" style="margin-top:10px">Auswerten</button>
     </div>
