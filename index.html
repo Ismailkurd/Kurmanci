@@ -133,7 +133,11 @@ tr:last-child td{border-bottom:none}
 .t-input:focus{outline:none;border-color:var(--ink)}
 .t-input.correct{border-color:var(--green);background:#F0FAF0}
 .t-input.wrong{border-color:var(--kurd);background:#FFF0EE}
-.t-feedback{font-size:14px;font-weight:700;min-height:20px;text-align:center;margin-bottom:10px}
+.t-feedback{font-size:14px;font-weight:700;min-height:20px;text-align:center;margin-bottom:8px}
+.t-example{background:var(--white);border:1px solid var(--paper3);border-left:3px solid var(--gold);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:none;text-align:left}
+.t-example.show{display:block}
+.t-example .exk{color:var(--kurd);font-weight:600;font-size:14px}
+.t-example .exd{color:var(--text2);margin-top:2px;font-size:12px}
 .t-ok{color:var(--green)}
 .t-err{color:var(--kurd)}
 .btn{width:100%;padding:14px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.15s}
@@ -395,6 +399,7 @@ tr:last-child td{border-bottom:none}
       <div class="t-hint" id="t-hint"></div>
     </div>
     <div class="t-feedback" id="t-feedback"></div>
+    <div class="t-example" id="t-example"><div class="exk"></div><div class="exd"></div></div>
     <input class="t-input" type="text" id="t-input" placeholder="Deine Antwort..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
     <button class="btn btn-primary" id="t-check" onclick="checkTrainer()">Prüfen</button>
     <button class="btn btn-secondary hidden" id="t-next" onclick="nextTrainer()">Weiter →</button>
@@ -546,74 +551,74 @@ setTimeout(()=>document.getElementById('splash').classList.add('hide'),1800);
 
 // ===== DATA =====
 const vocab=[
-  {d:"Name",k:"nav",cat:"Grundlagen"},{d:"ich",k:"ez",cat:"Grundlagen"},{d:"du",k:"tu",cat:"Grundlagen"},
-  {d:"er/sie",k:"ew",cat:"Grundlagen"},{d:"wir",k:"em",cat:"Grundlagen"},{d:"ihr",k:"hûn",cat:"Grundlagen"},
-  {d:"Bruder",k:"bira",cat:"Familie"},{d:"Schwester",k:"xwişk",cat:"Familie"},
-  {d:"Mutter",k:"dayik",cat:"Familie"},{d:"Vater",k:"bav",cat:"Familie"},
-  {d:"Haus / Zuhause",k:"mal",cat:"Orte"},{d:"Schule",k:"dibistan",cat:"Orte"},
-  {d:"Markt",k:"bazar",cat:"Orte"},{d:"Badezimmer",k:"serşok",cat:"Orte"},
-  {d:"Arbeit",k:"kar",cat:"Orte"},
-  {d:"Morgen (Tageszeit)",k:"sibeh",cat:"Zeit"},{d:"Abend",k:"êvar",cat:"Zeit"},
-  {d:"Nacht",k:"şev",cat:"Zeit"},{d:"heute",k:"îro",cat:"Zeit"},
-  {d:"morgen (Tag)",k:"sibê",cat:"Zeit"},{d:"gestern",k:"duh",cat:"Zeit"},
-  {d:"jetzt",k:"niha",cat:"Zeit"},{d:"früh",k:"zû",cat:"Zeit"},
-  {d:"mittags",k:"nîvro",cat:"Zeit"},{d:"danach",k:"paşê",cat:"Zeit"},
-  {d:"zuerst",k:"ewil",cat:"Zeit"},
-  {d:"Frühstück",k:"taştê",cat:"Essen"},{d:"Brot",k:"nan",cat:"Essen"},
-  {d:"Tee",k:"çay",cat:"Essen"},{d:"Wasser",k:"av",cat:"Essen"},
-  {d:"Fleisch",k:"goşt",cat:"Essen"},{d:"Reis",k:"birinc",cat:"Essen"},
-  {d:"Apfel",k:"sêv",cat:"Essen"},{d:"Lehrer",k:"mamoste",cat:"Berufe"},
-  {d:"Schüler",k:"xwendekar",cat:"Berufe"},{d:"Doktor",k:"doktor",cat:"Berufe"},
-  {d:"Freund",k:"heval",cat:"Alltag"},{d:"zusammen",k:"bi hev re",cat:"Alltag"},
-  {d:"viele",k:"gelek",cat:"Alltag"},{d:"ein bisschen",k:"hinekî",cat:"Alltag"},
-  {d:"gut",k:"baş",cat:"Adjektive"},{d:"schlecht",k:"xirab",cat:"Adjektive"},
-  {d:"groß",k:"mezin",cat:"Adjektive"},{d:"klein",k:"biçûk",cat:"Adjektive"},
-  {d:"schön/lecker",k:"xweş",cat:"Adjektive"},{d:"teuer",k:"giran",cat:"Adjektive"},
-  {d:"günstig",k:"erzan",cat:"Adjektive"},{d:"neu",k:"nû",cat:"Adjektive"},
-  {d:"alt",k:"kevin",cat:"Adjektive"},{d:"lang",k:"dirêj",cat:"Adjektive"},
-  {d:"kurz",k:"kurt",cat:"Adjektive"},{d:"warm / heiß",k:"germ",cat:"Adjektive"},
-  {d:"kalt",k:"sar",cat:"Adjektive"},{d:"krank",k:"nexweş",cat:"Adjektive"},
-  {d:"schwierig",k:"zehmet",cat:"Adjektive"},{d:"einfach",k:"hêsan",cat:"Adjektive"},
-  {d:"klug",k:"zîrek",cat:"Adjektive"},{d:"hübsch",k:"bedew",cat:"Adjektive"},
-  {d:"wichtig",k:"girîng",cat:"Adjektive"},{d:"leicht (Gewicht)",k:"sivik",cat:"Adjektive"},
-  {d:"reich",k:"dewlemend",cat:"Adjektive"},{d:"müde",k:"westiyayî",cat:"Adjektive"},
-  {d:"eins",k:"yek",cat:"Zahlen"},{d:"zwei",k:"du",cat:"Zahlen"},
-  {d:"drei",k:"sê",cat:"Zahlen"},{d:"vier",k:"çar",cat:"Zahlen"},
-  {d:"fünf",k:"pênc",cat:"Zahlen"},{d:"sechs",k:"şeş",cat:"Zahlen"},
-  {d:"sieben",k:"heft",cat:"Zahlen"},{d:"acht",k:"heşt",cat:"Zahlen"},
-  {d:"neun",k:"neh",cat:"Zahlen"},{d:"zehn",k:"deh",cat:"Zahlen"},
-  {d:"zwanzig",k:"bîst",cat:"Zahlen"},{d:"hundert",k:"sed",cat:"Zahlen"},
-  {d:"tausend",k:"hezar",cat:"Zahlen"},
-  {d:"ich gehe",k:"diçim",cat:"Verben"},{d:"ich komme",k:"têm",cat:"Verben"},
-  {d:"ich schlafe",k:"radizim",cat:"Verben"},{d:"ich stehe auf",k:"radibim",cat:"Verben"},
-  {d:"ich esse",k:"dixwim",cat:"Verben"},{d:"ich trinke",k:"vedixwim",cat:"Verben"},
-  {d:"ich mache",k:"dikim",cat:"Verben"},{d:"ich sage",k:"dibêjim",cat:"Verben"},
-  {d:"ich will",k:"dixwazim",cat:"Verben"},{d:"ich weiß",k:"dizanim",cat:"Verben"},
-  {d:"ich kann",k:"dikarim",cat:"Verben"},{d:"ich lerne",k:"fêr dibim",cat:"Verben"},
-  {d:"ich spreche",k:"diaxivim",cat:"Verben"},{d:"ich kehre zurück",k:"vedigherim",cat:"Verben"},
-  {d:"ja",k:"erê",cat:"Sonstiges"},{d:"nein",k:"na",cat:"Sonstiges"},
-  {d:"Job / Arbeit (umgangsspr.)",k:"şixul",cat:"Umgangssprache"},
-  {d:"Kumpel / Bruder (Anrede)",k:"birader",cat:"Umgangssprache"},
-  {d:"hey Junge! (Anrede)",k:"kuro",cat:"Umgangssprache"},
-  {d:"hey Mädchen! (Anrede)",k:"keçê",cat:"Umgangssprache"},
-  {d:"hey! (Anrede an Mann)",k:"lo",cat:"Umgangssprache"},
-  {d:"hey! (Anrede an Frau)",k:"lê (Anrede)",cat:"Umgangssprache"},
-  {d:"mein Lieber (Anrede)",k:"heyran",cat:"Umgangssprache"},
-  {d:"Schatz / Liebes (Anrede)",k:"canê",cat:"Umgangssprache"},
-  {d:"na los! / komm schon!",k:"de!",cat:"Umgangssprache"},
-  {d:"sag mal / zeig mal (Partikel)",k:"ka",cat:"Umgangssprache"},
-  {d:"einfach so / mal eben",k:"hema",cat:"Umgangssprache"},
-  {d:"es reicht / genug!",k:"bes e",cat:"Umgangssprache"},
-  {d:"Was gibt's?",k:"Çi heye?",cat:"Umgangssprache"},
-  {d:"okay (türk. Lehnwort)",k:"temam",cat:"Umgangssprache"},
-  {d:"echt / ich schwöre",k:"welleh",cat:"Umgangssprache"},
-  {d:"gern geschehen",k:"ser çavan",cat:"Umgangssprache"},
-  {d:"vielleicht",k:"belkî",cat:"Sonstiges"},{d:"weil",k:"ji ber ku",cat:"Sonstiges"},
-  {d:"aber",k:"lê",cat:"Sonstiges"},{d:"was?",k:"çi?",cat:"Sonstiges"},
-  {d:"wer?",k:"kî?",cat:"Sonstiges"},{d:"wo?",k:"ku?",cat:"Sonstiges"},
-  {d:"wie?",k:"çawa?",cat:"Sonstiges"},{d:"warum?",k:"çima?",cat:"Sonstiges"},
-  {d:"Uhr/Stunde",k:"saet",cat:"Sonstiges"},{d:"Gebet",k:"nimêj",cat:"Sonstiges"},
-  {d:"mit (umg.)",k:"gel",cat:"Sonstiges"},{d:"Kampf",k:"şer",cat:"Sonstiges"},
+  {d:"Name",k:"nav",cat:"Grundlagen",ex:["Navê min Azad e.","Mein Name ist Azad."]},{d:"ich",k:"ez",cat:"Grundlagen",ex:["Ez kurdim.","Ich bin Kurde."]},{d:"du",k:"tu",cat:"Grundlagen",ex:["Tu çawa yî?","Wie geht es dir?"]},
+  {d:"er/sie",k:"ew",cat:"Grundlagen",ex:["Ew li malê ye.","Er/sie ist zu Hause."]},{d:"wir",k:"em",cat:"Grundlagen",ex:["Em bi hev re diçin.","Wir gehen zusammen."]},{d:"ihr",k:"hûn",cat:"Grundlagen",ex:["Hûn ji ku derê ne?","Woher seid ihr?"]},
+  {d:"Bruder",k:"bira",cat:"Familie",ex:["Min du bira hene.","Ich habe zwei Brüder."]},{d:"Schwester",k:"xwişk",cat:"Familie",ex:["Xwişka min biçûk e.","Meine Schwester ist klein."]},
+  {d:"Mutter",k:"dayik",cat:"Familie",ex:["Dayika min xwarin çêdike.","Meine Mutter kocht."]},{d:"Vater",k:"bav",cat:"Familie",ex:["Bavê min kar dike.","Mein Vater arbeitet."]},
+  {d:"Haus / Zuhause",k:"mal",cat:"Orte",ex:["Ez li malê me.","Ich bin zu Hause."]},{d:"Schule",k:"dibistan",cat:"Orte",ex:["Ez diçim dibistanê.","Ich gehe zur Schule."]},
+  {d:"Markt",k:"bazar",cat:"Orte",ex:["Li bazarê gelek kes hene.","Auf dem Markt sind viele Leute."]},{d:"Badezimmer",k:"serşok",cat:"Orte",ex:["Ewil ez serşokê diçim.","Zuerst gehe ich ins Bad."]},
+  {d:"Arbeit",k:"kar",cat:"Orte",ex:["Ez ji karê têm.","Ich komme von der Arbeit."]},
+  {d:"Morgen (Tageszeit)",k:"sibeh",cat:"Zeit",ex:["Sibehê ez zû radibim.","Morgens stehe ich früh auf."]},{d:"Abend",k:"êvar",cat:"Zeit",ex:["Êvarê ez li malê me.","Abends bin ich zu Hause."]},
+  {d:"Nacht",k:"şev",cat:"Zeit",ex:["Şevê ez radizim.","Nachts schlafe ich."]},{d:"heute",k:"îro",cat:"Zeit",ex:["Îro ez diçim bazarê.","Heute gehe ich zum Markt."]},
+  {d:"morgen (Tag)",k:"sibê",cat:"Zeit",ex:["Sibê em kar dikin.","Morgen arbeiten wir."]},{d:"gestern",k:"duh",cat:"Zeit",ex:["Duh ez li malê bûm.","Gestern war ich zu Hause."]},
+  {d:"jetzt",k:"niha",cat:"Zeit",ex:["Niha saet pênc e.","Jetzt ist es 5 Uhr."]},{d:"früh",k:"zû",cat:"Zeit",ex:["Ez zû radizim.","Ich schlafe früh."]},
+  {d:"mittags",k:"nîvro",cat:"Zeit",ex:["Nîvro em dixwin.","Mittags essen wir."]},{d:"danach",k:"paşê",cat:"Zeit",ex:["Paşê ez diçim malê.","Danach gehe ich nach Hause."]},
+  {d:"zuerst",k:"ewil",cat:"Zeit",ex:["Ewil ez taştê dixwim.","Zuerst frühstücke ich."]},
+  {d:"Frühstück",k:"taştê",cat:"Essen",ex:["Taştê min nan û çay e.","Mein Frühstück ist Brot und Tee."]},{d:"Brot",k:"nan",cat:"Essen",ex:["Ez nan dixwim.","Ich esse Brot."]},
+  {d:"Tee",k:"çay",cat:"Essen",ex:["Tu çay dixwazî?","Willst du Tee?"]},{d:"Wasser",k:"av",cat:"Essen",ex:["Av sar e.","Das Wasser ist kalt."]},
+  {d:"Fleisch",k:"goşt",cat:"Essen",ex:["Em goşt dixwin.","Wir essen Fleisch."]},{d:"Reis",k:"birinc",cat:"Essen",ex:["Birinc xweş e.","Der Reis ist lecker."]},
+  {d:"Apfel",k:"sêv",cat:"Essen",ex:["Min sêv kirî.","Ich kaufte Äpfel."]},{d:"Lehrer",k:"mamoste",cat:"Berufe",ex:["Dayika min mamoste ye.","Meine Mutter ist Lehrerin."]},
+  {d:"Schüler",k:"xwendekar",cat:"Berufe",ex:["Ez xwendekar im.","Ich bin Schüler."]},{d:"Doktor",k:"doktor",cat:"Berufe",ex:["Ew doktor e.","Er ist Arzt."]},
+  {d:"Freund",k:"heval",cat:"Alltag",ex:["Hevalê min baş e.","Mein Freund ist gut."]},{d:"zusammen",k:"bi hev re",cat:"Alltag",ex:["Em bi hev re dixwin.","Wir essen zusammen."]},
+  {d:"viele",k:"gelek",cat:"Alltag",ex:["Gelek kes hene.","Es gibt viele Leute."]},{d:"ein bisschen",k:"hinekî",cat:"Alltag",ex:["Ez hinekî kurmancî dizanim.","Ich kann ein bisschen Kurdisch."]},
+  {d:"gut",k:"baş",cat:"Adjektive",ex:["Ew hevalekî baş e.","Er ist ein guter Freund."]},{d:"schlecht",k:"xirab",cat:"Adjektive",ex:["Ev xirab e.","Das ist schlecht."]},
+  {d:"groß",k:"mezin",cat:"Adjektive",ex:["Mala me mezin e.","Unser Haus ist groß."]},{d:"klein",k:"biçûk",cat:"Adjektive",ex:["Birayê min biçûk e.","Mein Bruder ist klein."]},
+  {d:"schön/lecker",k:"xweş",cat:"Adjektive",ex:["Xwarin xweş e.","Das Essen ist lecker."]},{d:"teuer",k:"giran",cat:"Adjektive",ex:["Moz giran in.","Bananen sind teuer."]},
+  {d:"günstig",k:"erzan",cat:"Adjektive",ex:["Sêv erzan in.","Äpfel sind günstig."]},{d:"neu",k:"nû",cat:"Adjektive",ex:["Mala me nû ye.","Unser Haus ist neu."]},
+  {d:"alt",k:"kevin",cat:"Adjektive",ex:["Dibistan kevin e.","Die Schule ist alt."]},{d:"lang",k:"dirêj",cat:"Adjektive",ex:["Roj dirêj e.","Der Tag ist lang."]},
+  {d:"kurz",k:"kurt",cat:"Adjektive",ex:["Şev kurt e.","Die Nacht ist kurz."]},{d:"warm / heiß",k:"germ",cat:"Adjektive",ex:["Çay germ e.","Der Tee ist heiß."]},
+  {d:"kalt",k:"sar",cat:"Adjektive",ex:["Av sar e.","Das Wasser ist kalt."]},{d:"krank",k:"nexweş",cat:"Adjektive",ex:["Ez nexweş im.","Ich bin krank."]},
+  {d:"schwierig",k:"zehmet",cat:"Adjektive",ex:["Kurmancî zehmet e.","Kurdisch ist schwer."]},{d:"einfach",k:"hêsan",cat:"Adjektive",ex:["Ev hêsan e.","Das ist einfach."]},
+  {d:"klug",k:"zîrek",cat:"Adjektive",ex:["Hevalê min zîrek e.","Mein Freund ist klug."]},{d:"hübsch",k:"bedew",cat:"Adjektive",ex:["Bajar bedew e.","Die Stadt ist schön."]},
+  {d:"wichtig",k:"girîng",cat:"Adjektive",ex:["Ziman girîng e.","Sprache ist wichtig."]},{d:"leicht (Gewicht)",k:"sivik",cat:"Adjektive",ex:["Nan sivik e.","Brot ist leicht."]},
+  {d:"reich",k:"dewlemend",cat:"Adjektive",ex:["Ew dewlemend e.","Er ist reich."]},{d:"müde",k:"westiyayî",cat:"Adjektive",ex:["Ez westiyayî me.","Ich bin müde."]},
+  {d:"eins",k:"yek",cat:"Zahlen",ex:["Min yek bira heye.","Ich habe einen Bruder."]},{d:"zwei",k:"du",cat:"Zahlen",ex:["Min du bira hene.","Ich habe zwei Brüder."]},
+  {d:"drei",k:"sê",cat:"Zahlen",ex:["Em sê kes in.","Wir sind drei Personen."]},{d:"vier",k:"çar",cat:"Zahlen",ex:["Çar sêv bidin min.","Gib mir vier Äpfel."]},
+  {d:"fünf",k:"pênc",cat:"Zahlen",ex:["Saet pênc e.","Es ist 5 Uhr."]},{d:"sechs",k:"şeş",cat:"Zahlen",ex:["Êvarê saet şeş e.","Abends ist es 6 Uhr."]},
+  {d:"sieben",k:"heft",cat:"Zahlen",ex:["Ez saet heft radibim.","Ich stehe um 7 auf."]},{d:"acht",k:"heşt",cat:"Zahlen",ex:["Saet heşt e.","Es ist 8 Uhr."]},
+  {d:"neun",k:"neh",cat:"Zahlen",ex:["Neh kes hene.","Es gibt neun Leute."]},{d:"zehn",k:"deh",cat:"Zahlen",ex:["Şevê saet deh e.","Nachts ist es 10 Uhr."]},
+  {d:"zwanzig",k:"bîst",cat:"Zahlen",ex:["Bîst euro giran e.","20 Euro ist teuer."]},{d:"hundert",k:"sed",cat:"Zahlen",ex:["Sed kes li bazarê ne.","100 Leute sind auf dem Markt."]},
+  {d:"tausend",k:"hezar",cat:"Zahlen",ex:["Hezar spas!","Tausend Dank!"]},
+  {d:"ich gehe",k:"diçim",cat:"Verben",ex:["Ez diçim malê.","Ich gehe nach Hause."]},{d:"ich komme",k:"têm",cat:"Verben",ex:["Ez ji karê têm.","Ich komme von der Arbeit."]},
+  {d:"ich schlafe",k:"radizim",cat:"Verben",ex:["Şevê ez zû radizim.","Nachts schlafe ich früh."]},{d:"ich stehe auf",k:"radibim",cat:"Verben",ex:["Sibehê ez zû radibim.","Morgens stehe ich früh auf."]},
+  {d:"ich esse",k:"dixwim",cat:"Verben",ex:["Ez nan dixwim.","Ich esse Brot."]},{d:"ich trinke",k:"vedixwim",cat:"Verben",ex:["Ez çay vedixwim.","Ich trinke Tee."]},
+  {d:"ich mache",k:"dikim",cat:"Verben",ex:["Ez kar dikim.","Ich arbeite."]},{d:"ich sage",k:"dibêjim",cat:"Verben",ex:["Ez dibêjim: baş e!","Ich sage: gut!"]},
+  {d:"ich will",k:"dixwazim",cat:"Verben",ex:["Ez dixwazim biçim.","Ich will gehen."]},{d:"ich weiß",k:"dizanim",cat:"Verben",ex:["Ez hinekî kurmancî dizanim.","Ich kann ein bisschen Kurdisch."]},
+  {d:"ich kann",k:"dikarim",cat:"Verben",ex:["Ez dikarim biaxivim.","Ich kann sprechen."]},{d:"ich lerne",k:"fêr dibim",cat:"Verben",ex:["Ez kurmancî fêr dibim.","Ich lerne Kurdisch."]},
+  {d:"ich spreche",k:"diaxivim",cat:"Verben",ex:["Ez gel te diaxivim.","Ich spreche mit dir."]},{d:"ich kehre zurück",k:"vedigherim",cat:"Verben",ex:["Êvarê ez vedigherim malê.","Abends kehre ich nach Hause zurück."]},
+  {d:"ja",k:"erê",cat:"Sonstiges",ex:["Erê, ez têm.","Ja, ich komme."]},{d:"nein",k:"na",cat:"Sonstiges",ex:["Na, ez naxwazim.","Nein, ich will nicht."]},
+  {d:"Job / Arbeit (umgangsspr.)",k:"şixul",cat:"Umgangssprache",ex:["Şixulê min baş e.","Mein Job ist gut."]},
+  {d:"Kumpel / Bruder (Anrede)",k:"birader",cat:"Umgangssprache",ex:["Çawa yî birader?","Wie geht's, Kumpel?"]},
+  {d:"hey Junge! (Anrede)",k:"kuro",cat:"Umgangssprache",ex:["Kuro, were!","Junge, komm!"]},
+  {d:"hey Mädchen! (Anrede)",k:"keçê",cat:"Umgangssprache",ex:["Keçê, tu li ku yî?","Mädchen, wo bist du?"]},
+  {d:"hey! (Anrede an Mann)",k:"lo",cat:"Umgangssprache",ex:["Lo, çi heye?","Hey, was gibt's?"]},
+  {d:"hey! (Anrede an Frau)",k:"lê (Anrede)",cat:"Umgangssprache",ex:["Lê, were malê!","Hey, komm nach Hause!"]},
+  {d:"mein Lieber (Anrede)",k:"heyran",cat:"Umgangssprache",ex:["Heyran, bes e!","Mein Lieber, es reicht!"]},
+  {d:"Schatz / Liebes (Anrede)",k:"canê",cat:"Umgangssprache",ex:["Canê, çay dixwazî?","Schatz, willst du Tee?"]},
+  {d:"na los! / komm schon!",k:"de!",cat:"Umgangssprache",ex:["De were!","Na komm!"]},
+  {d:"sag mal / zeig mal (Partikel)",k:"ka",cat:"Umgangssprache",ex:["Ka bêje!","Sag mal!"]},
+  {d:"einfach so / mal eben",k:"hema",cat:"Umgangssprache",ex:["Ez hema diçim.","Ich gehe mal eben."]},
+  {d:"es reicht / genug!",k:"bes e",cat:"Umgangssprache",ex:["Bes e, ez westiyayî me.","Genug, ich bin müde."]},
+  {d:"Was gibt's?",k:"Çi heye?",cat:"Umgangssprache",ex:["Çi heye, çi tune?","Was gibt's Neues?"]},
+  {d:"okay (türk. Lehnwort)",k:"temam",cat:"Umgangssprache",ex:["Temam, ez têm.","Okay, ich komme."]},
+  {d:"echt / ich schwöre",k:"welleh",cat:"Umgangssprache",ex:["Welleh ez nizanim.","Echt, ich weiß nicht."]},
+  {d:"gern geschehen",k:"ser çavan",cat:"Umgangssprache",ex:["Spas! — Ser çavan!","Danke! — Gern geschehen!"]},
+  {d:"vielleicht",k:"belkî",cat:"Sonstiges",ex:["Belkî ez sibê têm.","Vielleicht komme ich morgen."]},{d:"weil",k:"ji ber ku",cat:"Sonstiges",ex:["Ez naçim ji ber ku ez nexweş im.","Ich gehe nicht, weil ich krank bin."]},
+  {d:"aber",k:"lê",cat:"Sonstiges",ex:["Ez dixwazim lê nikarim.","Ich will, aber ich kann nicht."]},{d:"was?",k:"çi?",cat:"Sonstiges",ex:["Tu çi dixwazî?","Was willst du?"]},
+  {d:"wer?",k:"kî?",cat:"Sonstiges",ex:["Ew kî ye?","Wer ist das?"]},{d:"wo?",k:"ku?",cat:"Sonstiges",ex:["Tu li ku yî?","Wo bist du?"]},
+  {d:"wie?",k:"çawa?",cat:"Sonstiges",ex:["Tu çawa yî?","Wie geht es dir?"]},{d:"warum?",k:"çima?",cat:"Sonstiges",ex:["Çima tu naçî?","Warum gehst du nicht?"]},
+  {d:"Uhr/Stunde",k:"saet",cat:"Sonstiges",ex:["Saet çend e?","Wie viel Uhr ist es?"]},{d:"Gebet",k:"nimêj",cat:"Sonstiges",ex:["Ez nimêj dikim.","Ich bete."]},
+  {d:"mit (umg.)",k:"gel",cat:"Sonstiges",ex:["Ez gel te diçim.","Ich gehe mit dir."]},{d:"Kampf",k:"şer",cat:"Sonstiges",ex:["Em şer dikin.","Wir kämpfen."]},
 ];
 
 document.getElementById('home-vocab-count').textContent = vocab.length;
@@ -908,6 +913,7 @@ function showTCard(){
   document.getElementById('t-hint').textContent='Thema: '+item.cat;
   document.getElementById('t-feedback').textContent='';
   document.getElementById('t-feedback').className='t-feedback';
+  document.getElementById('t-example').classList.remove('show');
   document.getElementById('t-next').classList.add('hidden');
   document.getElementById('t-check').classList.remove('hidden');
   const inp=document.getElementById('t-input');
@@ -925,6 +931,12 @@ function checkTrainer(){
   if(ok){fb.className='t-feedback t-ok';fb.textContent='✓ Richtig!';inp.className='t-input correct';tCorrect++;}
   else{fb.className='t-feedback t-err';fb.textContent='✗ '+correct;inp.className='t-input wrong';tWrong.push(item);}
   inp.disabled=true;
+  if(item.ex){
+    const exb=document.getElementById('t-example');
+    exb.querySelector('.exk').textContent=item.ex[0];
+    exb.querySelector('.exd').textContent=item.ex[1];
+    exb.classList.add('show');
+  }
   document.getElementById('t-check').classList.add('hidden');
   document.getElementById('t-next').classList.remove('hidden');
 }
