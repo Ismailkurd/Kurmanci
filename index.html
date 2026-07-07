@@ -241,6 +241,18 @@ tr:last-child td{border-bottom:none}
 .input-ex-input.wrong{border-color:var(--kurd);background:#FFF0EE}
 .input-ex-feedback{font-size:12px;margin-top:6px;min-height:16px;font-weight:600}
 
+/* WOERTER */
+.w-search{width:calc(100% - 32px);margin:0 16px 12px;padding:11px 14px;border-radius:var(--radius);border:1.5px solid var(--paper3);background:var(--white);color:var(--text);font-size:15px;-webkit-appearance:none}
+.w-search:focus{outline:none;border-color:var(--ink)}
+.w-count{font-size:11px;color:var(--text3);padding:0 20px 8px}
+.w-row{background:var(--white);border:1px solid var(--paper3);border-radius:10px;margin:0 16px 8px;padding:12px 14px;cursor:pointer}
+.w-row-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.w-k{color:var(--kurd);font-weight:700;font-size:15px}
+.w-d{color:var(--text2);font-size:13px;text-align:right}
+.w-ex{display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--paper2)}
+.w-row.open .w-ex{display:block}
+.w-exk{color:var(--text);font-weight:600;font-size:13px;font-style:italic}
+.w-exd{color:var(--text3);font-size:12px;margin-top:2px}
 .hidden{display:none}
 
 /* ICONS */
@@ -286,6 +298,9 @@ tr:last-child td{border-bottom:none}
   </button>
   <button class="nav-btn" onclick="showPage('trainer')" id="nav-trainer">
     <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L6.5 14.5 L16 5 A1.8 1.8 0 0 1 18.5 7.5 L9 17 L5 19 Z"/><path d="M14.5 6.5 L17 9"/></svg><span class="nav-label">Trainer</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="showPage('woerter')" id="nav-woerter">
+    <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="nav-label">Wörter</span><div class="nav-dot"></div>
   </button>
   <button class="nav-btn" onclick="showPage('grammar')" id="nav-grammar">
     <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L19 19 L5 5 Z"/><path d="M9 19 L9 15.5 M13 19 L13 12"/></svg><span class="nav-label">Grammatik</span><div class="nav-dot"></div>
@@ -376,6 +391,18 @@ tr:last-child td{border-bottom:none}
 
   <!-- Kapitel Detail (wird dynamisch befüllt) -->
   <div id="kapitel-detail" class="chapter-detail"></div>
+</div>
+
+<!-- ===== WOERTER ===== -->
+<div class="page" id="page-woerter">
+  <div class="page-head">
+    <div class="page-head-title">Wörter</div>
+    <div class="page-head-sub">Alle Vokabeln zum Durchsehen — antippen für Beispielsatz</div>
+  </div>
+  <input class="w-search" type="text" id="w-search" placeholder="Suchen (Deutsch oder Kurmancî)..." autocomplete="off" oninput="renderWoerter()"/>
+  <div class="pills" id="w-cats"></div>
+  <div class="w-count" id="w-count"></div>
+  <div id="w-list"></div>
 </div>
 
 <!-- ===== TRAINER ===== -->
@@ -1115,6 +1142,39 @@ function checkInputs(chId){
   });
 }
 
+
+// ===== WOERTER =====
+let wCat='Alle';
+function initWoerter(){
+  const cats=['Alle',...new Set(vocab.map(v=>v.cat))];
+  const wrap=document.getElementById('w-cats');
+  wrap.innerHTML='';
+  cats.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='pill'+(c===wCat?' active':'');
+    b.textContent=c;
+    b.onclick=()=>{
+      wCat=c;
+      wrap.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+      b.classList.add('active');
+      renderWoerter();
+    };
+    wrap.appendChild(b);
+  });
+  renderWoerter();
+}
+function renderWoerter(){
+  const q=(document.getElementById('w-search').value||'').toLowerCase();
+  let data=wCat==='Alle'?vocab:vocab.filter(v=>v.cat===wCat);
+  if(q)data=data.filter(v=>v.k.toLowerCase().includes(q)||v.d.toLowerCase().includes(q));
+  document.getElementById('w-count').textContent=data.length+' Wörter';
+  document.getElementById('w-list').innerHTML=data.map(v=>`
+    <div class="w-row" onclick="this.classList.toggle('open')">
+      <div class="w-row-top"><span class="w-k">${v.k}</span><span class="w-d">${v.d}</span></div>
+      ${v.ex?`<div class="w-ex"><div class="w-exk">${v.ex[0]}</div><div class="w-exd">${v.ex[1]}</div></div>`:''}
+    </div>`).join('');
+}
+
 // ===== NAV =====
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1132,6 +1192,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   initKapitel();
   initTrainerCats();
+  initWoerter();
   restartTrainer();
 });
 </script>
