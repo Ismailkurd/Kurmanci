@@ -363,6 +363,16 @@ tr:last-child td{border-bottom:none}
     <div class="tip-text" id="tip-text"></div>
   </div>
 
+  <div class="section-label">Satz-Check</div>
+  <div class="content">
+    <div class="card">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.5">Schreib einen kurdischen Satz oder ein Wort — die App prüft es und korrigiert dich, wie im Chat.</div>
+      <input class="t-input" style="text-align:left;font-size:15px;margin-bottom:8px" id="check-input" placeholder="z.B. Ez gel dayika te diaxivim" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <button class="btn btn-primary" id="check-btn" onclick="checkSentence()">Prüfen</button>
+      <div id="check-result" style="display:none;margin-top:12px;font-size:13px;line-height:1.65;color:var(--text);background:var(--paper);border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px"></div>
+    </div>
+  </div>
+
   <div class="section-label">Nützliche Sätze</div>
   <div class="content">
     <div class="card">
@@ -1175,6 +1185,27 @@ function renderWoerter(){
     </div>`).join('');
 }
 
+
+// ===== SATZ-CHECK =====
+async function checkSentence(){
+  const inp=document.getElementById('check-input');
+  const res=document.getElementById('check-result');
+  const btn=document.getElementById('check-btn');
+  const text=inp.value.trim();
+  if(!text)return;
+  btn.disabled=true;btn.textContent='Prüfe...';
+  res.style.display='block';res.textContent='Einen Moment...';
+  try{
+    const r=await fetch('/api/check',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text})});
+    const d=await r.json();
+    const raw=d.answer||d.error||'Unbekannter Fehler.';
+    res.innerHTML=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\*\*(.*?)\*\*/g,'<strong style="color:var(--kurd)">$1</strong>').replace(/\n/g,'<br>');
+  }catch(e){
+    res.textContent='Verbindungsfehler — Funktion noch nicht aktiv? (API-Key in Netlify hinterlegen)';
+  }
+  btn.disabled=false;btn.textContent='Prüfen';
+}
+
 // ===== NAV =====
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1187,6 +1218,7 @@ function showPage(id){
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('check-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkSentence();});
   document.getElementById('t-input').addEventListener('keydown',e=>{
     if(e.key==='Enter'){if(!tAnswered)checkTrainer();else nextTrainer();}
   });
