@@ -39,14 +39,15 @@ body{background:var(--paper);color:var(--text);font-family:-apple-system,BlinkMa
 
 /* NAV */
 .nav{position:fixed;bottom:0;left:0;right:0;background:var(--ink);display:flex;justify-content:space-around;align-items:flex-end;padding:8px 0 calc(8px + var(--safe-bottom));z-index:100;border-top:1px solid #1A2A1A}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 8px;transition:all 0.2s;min-width:56px}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 4px;transition:all 0.2s;min-width:0;flex:1}
 .ic{width:22px;height:22px;display:block}
 .nav-icon{display:flex;align-items:center;justify-content:center;color:#3A5A3A;transition:color 0.2s,transform 0.2s}
 .nav-btn.active .nav-icon{color:var(--gold)}
 .quick-icon .ic{width:26px;height:26px}
 .ch-section-title .ic,.card-head .ic{width:15px;height:15px;display:inline-block;vertical-align:-2px}
 .tip-label .ic{width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:2px}
-.nav-label{font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#3A5A3A;transition:color 0.2s}
+.nav-label{font-size:8.5px;font-weight:600;letter-spacing:0.03em;text-transform:uppercase;color:#3A5A3A;transition:color 0.2s;white-space:nowrap}
+.nav-btn .icn{width:20px!important;height:20px!important}
 .nav-btn.active .nav-icon{transform:scale(1.15)}
 .nav-btn.active .nav-label{color:var(--gold)}
 .nav-dot{width:4px;height:4px;border-radius:50%;background:transparent;margin-top:2px;transition:background 0.2s}
@@ -241,6 +242,39 @@ tr:last-child td{border-bottom:none}
 .input-ex-input.wrong{border-color:var(--kurd);background:#FFF0EE}
 .input-ex-feedback{font-size:12px;margin-top:6px;min-height:16px;font-weight:600}
 
+/* FLASHCARDS */
+.fc-stats{display:flex;gap:10px;margin-bottom:4px}
+.fc-stat{flex:1;background:var(--white);border:1px solid var(--paper3);border-radius:var(--radius);padding:14px 8px;text-align:center}
+.fc-stat-num{font-size:26px;font-weight:800;color:var(--ink)}
+.fc-stat:nth-child(1) .fc-stat-num{color:var(--kurd)}
+.fc-stat:nth-child(2) .fc-stat-num{color:var(--gold2)}
+.fc-stat:nth-child(3) .fc-stat-num{color:var(--green)}
+.fc-stat-lbl{font-size:10px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:0.05em}
+.fc-intro{margin-bottom:12px}
+.fc-top{display:flex;align-items:center;gap:12px;padding:12px 20px 4px}
+.fc-exit{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:0;line-height:1}
+.fc-progress-text{font-size:12px;color:var(--text3);font-weight:600}
+.fc-card{background:var(--ink);border-radius:18px;min-height:280px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;padding:32px 24px;user-select:none}
+.fc-card::before{content:'';position:absolute;top:-60px;right:-60px;width:160px;height:160px;background:radial-gradient(circle,rgba(212,160,23,0.1),transparent);border-radius:50%}
+.fc-card-inner{text-align:center;width:100%;position:relative;z-index:1}
+.fc-card-tag{font-size:10px;color:#5A7A5A;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:16px}
+.fc-card-front{font-size:30px;font-weight:800;color:var(--white);line-height:1.2}
+.fc-card-divider{width:40px;height:2px;background:#2A3A2A;margin:18px auto;display:none}
+.fc-card-back{font-size:24px;font-weight:700;color:var(--gold);line-height:1.3;display:none}
+.fc-card-ex{font-size:13px;color:#8AA88A;margin-top:14px;line-height:1.5;display:none;font-style:italic}
+.fc-card.flipped .fc-card-divider,.fc-card.flipped .fc-card-back{display:block}
+.fc-card.flipped .fc-card-ex{display:block}
+.fc-flip-hint{font-size:11px;color:#3A5A3A;margin-top:20px}
+.fc-card.flipped .fc-flip-hint{display:none}
+.fc-rate{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px}
+.fc-rate-btn{padding:12px 4px;border-radius:10px;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:700;color:var(--white);transition:transform 0.1s}
+.fc-rate-btn:active{transform:scale(0.96)}
+.fc-rate-btn small{font-size:9px;font-weight:600;opacity:0.85}
+.fc-rate-btn.again{background:#B33A32}
+.fc-rate-btn.hard{background:#C77A28}
+.fc-rate-btn.good{background:#1A7C4A}
+.fc-rate-btn.easy{background:#2A6A9A}
+
 /* WOERTER */
 .w-search{width:calc(100% - 32px);margin:0 16px 12px;padding:11px 14px;border-radius:var(--radius);border:1.5px solid var(--paper3);background:var(--white);color:var(--text);font-size:15px;-webkit-appearance:none}
 .w-search:focus{outline:none;border-color:var(--ink)}
@@ -298,6 +332,9 @@ tr:last-child td{border-bottom:none}
   </button>
   <button class="nav-btn" onclick="showPage('trainer')" id="nav-trainer">
     <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 L6.5 14.5 L16 5 A1.8 1.8 0 0 1 18.5 7.5 L9 17 L5 19 Z"/><path d="M14.5 6.5 L17 9"/></svg><span class="nav-label">Trainer</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="showPage('flash')" id="nav-flash">
+    <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="14" height="10" rx="2" transform="rotate(-6 10 11)"/><rect x="7" y="8" width="14" height="10" rx="2" transform="rotate(4 14 13)"/></svg><span class="nav-label">Karten</span><div class="nav-dot"></div>
   </button>
   <button class="nav-btn" onclick="showPage('woerter')" id="nav-woerter">
     <svg class="icn" style="width:22px;height:22px" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="nav-label">Wörter</span><div class="nav-dot"></div>
@@ -401,6 +438,74 @@ tr:last-child td{border-bottom:none}
 
   <!-- Kapitel Detail (wird dynamisch befüllt) -->
   <div id="kapitel-detail" class="chapter-detail"></div>
+</div>
+
+<!-- ===== FLASHCARDS ===== -->
+<div class="page" id="page-flash">
+  <div class="page-head">
+    <div class="page-head-title">Karten</div>
+    <div class="page-head-sub">Spaced Repetition — wie Anki</div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="flash-dash">
+    <div class="content">
+      <div class="fc-stats">
+        <div class="fc-stat"><div class="fc-stat-num" id="fc-due">0</div><div class="fc-stat-lbl">fällig</div></div>
+        <div class="fc-stat"><div class="fc-stat-num" id="fc-new">0</div><div class="fc-stat-lbl">neu</div></div>
+        <div class="fc-stat"><div class="fc-stat-num" id="fc-learned">0</div><div class="fc-stat-lbl">gelernt</div></div>
+      </div>
+    </div>
+    <div class="pills" id="fc-cats" style="margin-top:4px"></div>
+    <div class="content">
+      <div class="fc-intro card">
+        <div style="font-size:13px;color:var(--text2);line-height:1.6">Jede Karte kommt genau dann wieder, wenn du sie zu vergessen drohst. Bewerte dich ehrlich — das steuert den Rhythmus.</div>
+      </div>
+      <button class="btn btn-primary" onclick="startFlash()" id="fc-start">Lernen starten</button>
+      <button class="btn btn-secondary" onclick="resetFlashCat()" id="fc-reset" style="margin-top:8px">Fortschritt dieser Kategorie zurücksetzen</button>
+    </div>
+  </div>
+
+  <!-- Session -->
+  <div id="flash-session" style="display:none">
+    <div class="fc-top">
+      <button class="fc-exit" onclick="exitFlash()">✕</button>
+      <div class="fc-progress-text" id="fc-sess-prog"></div>
+    </div>
+    <div class="content">
+      <div class="fc-card" id="fc-card" onclick="flipCard()">
+        <div class="fc-card-inner">
+          <div class="fc-card-tag" id="fc-card-tag"></div>
+          <div class="fc-card-front" id="fc-front"></div>
+          <div class="fc-card-divider" id="fc-divider"></div>
+          <div class="fc-card-back" id="fc-back"></div>
+          <div class="fc-card-ex" id="fc-ex"></div>
+          <div class="fc-flip-hint" id="fc-flip-hint">Tippen zum Umdrehen</div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="fc-rate" id="fc-rate" style="display:none">
+        <button class="fc-rate-btn again" onclick="rateCard(0)"><span>Nochmal</span><small id="fc-i-again"></small></button>
+        <button class="fc-rate-btn hard" onclick="rateCard(1)"><span>Schwer</span><small id="fc-i-hard"></small></button>
+        <button class="fc-rate-btn good" onclick="rateCard(2)"><span>Gut</span><small id="fc-i-good"></small></button>
+        <button class="fc-rate-btn easy" onclick="rateCard(3)"><span>Einfach</span><small id="fc-i-easy"></small></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done -->
+  <div id="flash-done" style="display:none">
+    <div class="content">
+      <div class="t-score" style="display:block">
+        <div class="t-score-num" id="fc-done-num"></div>
+        <div class="t-score-denom">Karten wiederholt</div>
+        <div class="t-score-msg" id="fc-done-msg"></div>
+        <div class="t-score-sub" id="fc-done-sub"></div>
+        <button class="btn btn-primary" onclick="exitFlash()" style="margin-top:20px">Fertig</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== WOERTER ===== -->
@@ -1366,6 +1471,195 @@ async function checkSentence(){
   btn.disabled=false;btn.textContent='Prüfen';
 }
 
+// ===== FLASHCARDS (SM-2) =====
+var FC_KEY='kurmanci_flash_v1';
+var fcCat='Alle';
+var fcState={};
+var fcSession=[];
+var fcPos=0;
+var fcReviewed=0;
+var fcCardShown=null;
+
+function fcLoad(){
+  try{fcState=JSON.parse(localStorage.getItem(FC_KEY))||{};}catch(e){fcState={};}
+}
+function fcSave(){
+  try{localStorage.setItem(FC_KEY,JSON.stringify(fcState));}catch(e){}
+}
+function fcKeyOf(v){return v.k+'||'+v.d;}
+function fcNow(){return Date.now();}
+function fcDay(){return 86400000;}
+
+function fcGet(v){
+  var k=fcKeyOf(v);
+  return fcState[k]||null;
+}
+// SM-2 defaults: ef 2.5, interval days, reps
+function fcInit(){return {ef:2.5,int:0,reps:0,due:0};}
+
+function fcPool(){
+  return fcCat==='Alle'?vocab:vocab.filter(function(v){return v.cat===fcCat;});
+}
+
+function fcRefreshDash(){
+  var pool=fcPool();
+  var now=fcNow(),due=0,neu=0,learned=0;
+  pool.forEach(function(v){
+    var s=fcGet(v);
+    if(!s){neu++;}
+    else{
+      if(s.due<=now)due++;
+      if(s.reps>0&&s.int>=1)learned++;
+    }
+  });
+  document.getElementById('fc-due').textContent=due;
+  document.getElementById('fc-new').textContent=neu;
+  document.getElementById('fc-learned').textContent=learned;
+}
+
+function initFlashCats(){
+  var cats=['Alle'].concat(vocab.map(function(v){return v.cat;}).filter(function(c,i,a){return a.indexOf(c)===i;}));
+  var wrap=document.getElementById('fc-cats');
+  wrap.innerHTML='';
+  cats.forEach(function(c){
+    var b=document.createElement('button');
+    b.className='pill'+(c===fcCat?' active':'');
+    b.textContent=c;
+    b.onclick=function(){
+      fcCat=c;
+      wrap.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active');});
+      b.classList.add('active');
+      fcRefreshDash();
+    };
+    wrap.appendChild(b);
+  });
+  fcRefreshDash();
+}
+
+function startFlash(){
+  fcLoad();
+  var pool=fcPool();
+  var now=fcNow();
+  var due=[],neu=[];
+  pool.forEach(function(v){
+    var s=fcGet(v);
+    if(!s)neu.push(v);
+    else if(s.due<=now)due.push(v);
+  });
+  // shuffle each
+  due.sort(function(){return Math.random()-0.5;});
+  neu.sort(function(){return Math.random()-0.5;});
+  // limit new cards per session to 15 for healthy pacing
+  neu=neu.slice(0,15);
+  fcSession=due.concat(neu);
+  if(fcSession.length===0){
+    // nothing due: offer a quick refresher of soonest cards
+    fcSession=pool.slice().sort(function(a,b){
+      var sa=fcGet(a)||{due:0},sb=fcGet(b)||{due:0};
+      return sa.due-sb.due;
+    }).slice(0,10);
+  }
+  fcPos=0;fcReviewed=0;
+  document.getElementById('flash-dash').style.display='none';
+  document.getElementById('flash-done').style.display='none';
+  document.getElementById('flash-session').style.display='block';
+  showFcCard();
+}
+
+function showFcCard(){
+  if(fcPos>=fcSession.length){return finishFlash();}
+  var v=fcSession[fcPos];
+  fcCardShown=v;
+  var card=document.getElementById('fc-card');
+  card.classList.remove('flipped');
+  // Randomize direction for deeper recall
+  var dir=Math.random()<0.5?'kd':'dk';
+  v._dir=dir;
+  document.getElementById('fc-card-tag').textContent=v.cat+(dir==='kd'?'  ·  Kurmancî → DE':'  ·  DE → Kurmancî');
+  document.getElementById('fc-front').textContent=dir==='kd'?v.k:v.d;
+  document.getElementById('fc-back').textContent=dir==='kd'?v.d:v.k;
+  var ex=document.getElementById('fc-ex');
+  if(v.ex){ex.textContent=v.ex[0]+' — '+v.ex[1];}else{ex.textContent='';}
+  document.getElementById('fc-rate').style.display='none';
+  document.getElementById('fc-flip-hint').style.display='block';
+  document.getElementById('fc-sess-prog').textContent=(fcPos+1)+' / '+fcSession.length;
+}
+
+function flipCard(){
+  var card=document.getElementById('fc-card');
+  if(card.classList.contains('flipped'))return;
+  card.classList.add('flipped');
+  // compute preview intervals
+  var v=fcCardShown;var s=fcGet(v)||fcInit();
+  document.getElementById('fc-i-again').textContent='<1d';
+  document.getElementById('fc-i-hard').textContent=fcPreview(s,1);
+  document.getElementById('fc-i-good').textContent=fcPreview(s,2);
+  document.getElementById('fc-i-easy').textContent=fcPreview(s,3);
+  document.getElementById('fc-rate').style.display='grid';
+}
+
+function fcPreview(s,q){
+  var t=fcApply(Object.assign({},s),q);
+  if(t.int<1)return '<1d';
+  if(t.int<30)return Math.round(t.int)+'d';
+  return Math.round(t.int/30)+'mo';
+}
+
+// Core SM-2
+function fcApply(s,q){
+  // q: 0 again,1 hard,2 good,3 easy → map to SM-2 quality 0-5
+  if(q===0){ s.reps=0; s.int=0; }
+  else{
+    var quality=q===1?3:q===2?4:5;
+    s.ef=s.ef+(0.1-(5-quality)*(0.08+(5-quality)*0.02));
+    if(s.ef<1.3)s.ef=1.3;
+    s.reps=(s.reps||0)+1;
+    if(s.reps===1)s.int=q===1?0.5:1;
+    else if(s.reps===2)s.int=q===1?3:6;
+    else s.int=s.int*s.ef*(q===1?0.7:q===3?1.3:1);
+  }
+  return s;
+}
+
+function rateCard(q){
+  var v=fcCardShown;
+  var k=fcKeyOf(v);
+  var s=fcState[k]||fcInit();
+  s=fcApply(s,q);
+  s.due=fcNow()+Math.max(0.007,s.int)*fcDay();
+  fcState[k]=s;
+  fcSave();
+  fcReviewed++;
+  // "again" → requeue near end of this session
+  if(q===0){ fcSession.push(v); }
+  fcPos++;
+  showFcCard();
+}
+
+function finishFlash(){
+  document.getElementById('flash-session').style.display='none';
+  document.getElementById('flash-done').style.display='block';
+  document.getElementById('fc-done-num').textContent=fcReviewed;
+  document.getElementById('fc-done-msg').textContent='Afrîn! 🎉';
+  fcRefreshDash();
+  var due=parseInt(document.getElementById('fc-due').textContent,10);
+  document.getElementById('fc-done-sub').textContent=due>0?(due+' Karten noch fällig'):'Alles fällige erledigt!';
+}
+
+function exitFlash(){
+  document.getElementById('flash-session').style.display='none';
+  document.getElementById('flash-done').style.display='none';
+  document.getElementById('flash-dash').style.display='block';
+  fcRefreshDash();
+}
+
+function resetFlashCat(){
+  var pool=fcPool();
+  pool.forEach(function(v){delete fcState[fcKeyOf(v)];});
+  fcSave();
+  fcRefreshDash();
+}
+
 // ===== NAV =====
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1374,6 +1668,12 @@ function showPage(id){
   document.getElementById('nav-'+id).classList.add('active');
   window.scrollTo(0,0);
   if(id==='trainer')restartTrainer();
+  if(id==='flash'){
+    document.getElementById('flash-session').style.display='none';
+    document.getElementById('flash-done').style.display='none';
+    document.getElementById('flash-dash').style.display='block';
+    fcLoad();fcRefreshDash();
+  }
 }
 
 // ===== INIT =====
@@ -1385,6 +1685,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   initKapitel();
   initTrainerCats();
   initWoerter();
+  fcLoad();
+  initFlashCats();
   restartTrainer();
 });
 </script>
